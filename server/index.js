@@ -11,12 +11,27 @@ const app = express()
 
 app.use(cookieParser())
 app.use(express.json())
+const allowedOrigins = [
+    process.env.LOCAL_URL,
+    process.env.LIVE_URL,
+    'http://localhost:5173',
+    'http://localhost:5174',
+].filter(Boolean)
+
 app.use(cors({
-    origin: (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'developement')
-        ? process.env.LOCAL_URL
-        : process.env.LIVE_URL,
+    origin: function (origin, callback) {
+        // Allow requests with no origin (mobile apps, curl, etc.)
+        if (!origin) return callback(null, true)
+        if (allowedOrigins.includes(origin)) {
+            return callback(null, true)
+        }
+        return callback(new Error(`CORS: Origin ${origin} not allowed`))
+    },
     credentials: true
 }))
+
+// Handle preflight OPTIONS requests for all routes
+app.options('*', cors())
 
 
 app.use('/api/auth', require('./routes/auth.routes'))
