@@ -51,7 +51,7 @@ app.use((req, res) => {
 
 
     app.use((err, req, res, next) => {
-        console.log(error)
+        console.error(err)
         res.status(500).json({ message: `SERVER ERROR ${err.message}` })
     })
 
