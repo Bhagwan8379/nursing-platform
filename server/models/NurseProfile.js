@@ -1,0 +1,87 @@
+const mongoose = require('mongoose')
+
+
+const nurseProfileSchema = new mongoose.Schema({
+    nurseId: { type: mongoose.Schema.Types.ObjectId, ref: 'Auth', required: true, unique: true },
+    gender: { type: String, required: true },
+    address: {
+        street: { type: String, trim: true, required: true },
+        city: { type: String, trim: true, required: true },
+        state: { type: String, trim: true, required: true },
+        pin: { type: String, trim: true, required: true }
+    },
+    profilePhoto: { type: String },
+    qualification: { type: String, enum: ['ANM', 'GNM', 'B.Sc Nursing', 'B.Sc', 'M.Sc Nursing', 'M.Sc', 'Post Basic B.Sc', 'Phd'], required: true },
+    experienceYear: { type: Number, required: true },
+    nursingCouncilRegNo: { type: String, trim: true, unique: true, required: true },
+    documents: {
+        degreeCertificate: { type: String, required: true },
+        nursingCouncilCertificate: { type: String, required: true },
+        idProof: { type: String, required: true },
+        addressProof: { type: String, required: true },
+    },
+    verificationStatus: { type: String, enum: ['pending', 'under_review', 'approved', 'reject', 'suspended'], default: 'pending' },
+    rejectionReason: { type: String },
+    ApprovedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'Auth', default: null },
+    approvedAt: { type: Date, default: null },
+    availabilityStatus: { type: String, enum: ['available', 'busy', 'off_duty'], default: 'available' },
+    serviceRadius: { type: Number, default: 10 },
+    ratingAverage: { type: Number, min: 0, max: 5, default: 0 },
+    totalCompleteJobs: { type: Number, default: 0 },
+    bankDetailes: {
+        accountNumber: { type: String },
+        ifscCode: { type: String },
+        bankName: { type: String },
+    },
+    specialization: {
+        type: String,
+        enum: [
+            "General Nursing",
+            "Post-Surgery Care",
+            "Wound Dressing",
+            "Elder Care",
+            "Injection / IV Administration",
+            "IV Drip Setup",
+            "Blood Pressure Monitoring",
+            "Sugar Level Check",
+            "Catheter Care",
+            "Stoma Care",
+            "Bedridden Patient Care",
+            "Patient Hygiene Care",
+            "Medication Administration",
+            "Post-Hospitalization Care",
+            "Home ICU Care",
+            "Ventilator Patient Care",
+            "Tracheostomy Care",
+            "Feeding Tube Care",
+            "NG Tube Feeding",
+            "Oxygen Therapy",
+            "Nebulization",
+            "Physiotherapy Assistance",
+            "Palliative Care",
+            "Cancer Patient Care",
+            "Stroke Patient Care",
+            "Paralysis Patient Care",
+            "Dementia Patient Care",
+            "Alzheimer Patient Care",
+            "Mother & Baby Care",
+            "Newborn Care",
+            "Baby Vaccination Assistance",
+            "Post-Delivery Mother Care",
+            "Suture Removal",
+            "Dressing Change",
+            "Burn Care",
+            "Diabetic Foot Care",
+            "Pressure Ulcer Care",
+            "Bed Sore Treatment",
+            "Urine Bag Change",
+            "Patient Mobility Assistance",
+            "Daily Health Monitoring",
+            "Home Visit Nursing",
+            "Night Duty Nursing",
+            "24 Hour Nursing Care"
+        ]
+    }
+}, { timestamps: true })
+
+module.exports = mongoose.model('NurseProfile', nurseProfileSchema)
