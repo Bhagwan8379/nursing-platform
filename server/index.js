@@ -14,13 +14,15 @@ app.use(express.json())
 const allowedOrigins = [
     process.env.LOCAL_URL,
     process.env.LIVE_URL,
+    // Hardcoded fallback URLs
+    'https://nursing-platform-three.vercel.app',
     'http://localhost:5173',
     'http://localhost:5174',
 ].filter(Boolean)
 
-app.use(cors({
+const corsOptions = {
     origin: function (origin, callback) {
-        // Allow requests with no origin (mobile apps, curl, etc.)
+        // Allow requests with no origin (mobile apps, curl, Postman, etc.)
         if (!origin) return callback(null, true)
         if (allowedOrigins.includes(origin)) {
             return callback(null, true)
@@ -28,10 +30,12 @@ app.use(cors({
         return callback(new Error(`CORS: Origin ${origin} not allowed`))
     },
     credentials: true
-}))
+}
 
-// Handle preflight OPTIONS requests for all routes
-app.options('*', cors())
+app.use(cors(corsOptions))
+
+// Handle preflight OPTIONS requests — must use same corsOptions (NOT bare cors())
+app.options('*', cors(corsOptions))
 
 
 app.use('/api/auth', require('./routes/auth.routes'))
