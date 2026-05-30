@@ -12,7 +12,6 @@ const Home = () => {
 
     return (
         <PublicLayout>
-
             <Hero />
             <HowItWorks />
             <Service />

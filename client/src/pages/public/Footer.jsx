@@ -1,11 +1,33 @@
-// src/components/shared/Footer.jsx
-
 import { Link } from 'react-router-dom'
-import { Heart, Phone, Mail, MapPin, ChevronRight } from 'lucide-react'
+import { Heart, Phone, Mail, MapPin, ChevronRight, CheckCircle2 } from 'lucide-react'
 import { Separator } from '@/components/ui/separator'
+import React, { useEffect, useRef, useState } from 'react'
 
 const Footer = () => {
     const currentYear = new Date().getFullYear()
+    const [isVisible, setIsVisible] = useState(false)
+    const sectionRef = useRef(null)
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setIsVisible(true)
+                }
+            },
+            { threshold: 0.1 }
+        )
+
+        if (sectionRef.current) {
+            observer.observe(sectionRef.current)
+        }
+
+        return () => {
+            if (sectionRef.current) {
+                observer.unobserve(sectionRef.current)
+            }
+        }
+    }, [])
 
     const contact = [
         { icon: Phone, text: '+91 98765 43210' },
@@ -14,9 +36,9 @@ const Footer = () => {
     ]
 
     const whychoose = [
-        { text: '✓ Verified Professionals' },
-        { text: '✓ 24/7 Availability' },
-        { text: '✓ Quality Assured' }
+        { text: 'Verified Professionals' },
+        { text: '24/7 Availability' },
+        { text: 'Quality Assured' }
     ]
 
     const forNurse = [
@@ -31,35 +53,43 @@ const Footer = () => {
         { name: 'About Us', path: '/about' },
         { name: 'Contact', path: '/contact' },
     ]
-    return (
-        <footer className="relative bg-linear-to-br from-slate-900 to-slate-800 text-white overflow-hidden">
-            {/* Decorative Elements - Subtle */}
-            <div className="absolute inset-0 bg-grid-white/[0.02] bg-size-[50px_50px]" />
-            <div className="absolute top-0 right-0 w-64 h-64 bg-violet-500/10 rounded-full blur-3xl" />
 
-            <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-10">
+    return (
+        <footer 
+            ref={sectionRef}
+            className="relative bg-slate-950 text-white overflow-hidden border-t border-purple-900/20"
+        >
+
+            <div 
+                className={`relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-10 transition-all duration-1000 ease-out transform ${
+                    isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+                }`}
+            >
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
 
                     {/* Brand Section */}
-                    <div className="lg:col-span-1">
-                        <div className="flex items-center gap-2 mb-3">
-                            <div className="bg-linear-to-br from-violet-500 to-purple-600 p-1.5 rounded-lg shadow-lg">
-                                <Heart className="w-4 h-4 text-white" />
+                    <div className="lg:col-span-1 flex flex-col justify-start">
+                        <div className="flex items-center gap-2 mb-3.5 group">
+                            <div className="bg-purple-600 p-1.5 rounded-lg shadow-lg shadow-purple-950/40 transition-transform duration-300 group-hover:scale-105">
+                                <Heart className="w-4 h-4 text-white fill-white/10" />
                             </div>
-                            <span className="font-bold text-xl bg-linear-to-br from-violet-400 to-purple-400 bg-clip-text text-transparent">
+                            <span className="font-bold text-xl text-purple-400 tracking-tight">
                                 CareNest
                             </span>
                         </div>
-                        <p className="text-gray-300 text-xs leading-relaxed mb-3">
-                            Professional at-home nursing services. Connecting patients with verified nurses.
+                        
+                        <p className="text-gray-400 text-xs leading-relaxed mb-4">
+                            Professional at-home nursing services. Connecting patients with verified, trusted nurses.
                         </p>
 
-                        {/* Contact Info - Compact */}
-                        <div className="space-y-1.5">
+                        {/* Contact Info */}
+                        <div className="space-y-2">
                             {contact.map((item, idx) => (
-                                <div key={idx} className="flex items-center gap-2 text-gray-300">
-                                    <item.icon className="w-3.5 h-3.5 text-violet-400" />
-                                    <span className="text-xs">{item.text}</span>
+                                <div key={idx} className="flex items-center gap-2 text-gray-300 group cursor-default">
+                                    <item.icon className="w-3.5 h-3.5 text-purple-400 group-hover:text-purple-300 transition-colors shrink-0" />
+                                    <span className="text-xs text-gray-300 group-hover:text-white transition-colors">
+                                        {item.text}
+                                    </span>
                                 </div>
                             ))}
                         </div>
@@ -67,19 +97,19 @@ const Footer = () => {
 
                     {/* Quick Links */}
                     <div>
-                        <h3 className="font-semibold text-sm mb-3 relative inline-block">
+                        <h3 className="font-bold text-xs mb-4 uppercase tracking-wider text-white relative inline-block">
                             Quick Links
-                            <div className="absolute bottom-0 left-0 w-8 h-0.5 bg-linear-to-br from-violet-500 to-purple-500 rounded-full mt-0.5" />
+                            <div className="absolute -bottom-1 left-0 w-6 h-0.5 bg-purple-600 rounded-full" />
                         </h3>
-                        <ul className="space-y-1.5">
+                        <ul className="space-y-2">
                             {quickLinks.map((link) => (
                                 <li key={link.name}>
                                     <Link
                                         to={link.path}
-                                        className="group flex items-center gap-1.5 text-gray-300 hover:text-violet-400 transition-all duration-300 text-xs"
+                                        className="group flex items-center gap-1 text-gray-400 hover:text-purple-300 hover:translate-x-0.5 transition-all duration-300 text-xs"
                                     >
-                                        <ChevronRight className="w-2.5 h-2.5 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all" />
-                                        <span>{link.name}</span>
+                                        <ChevronRight className="w-3 h-3 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all text-purple-400" />
+                                        <span className="font-medium">{link.name}</span>
                                     </Link>
                                 </li>
                             ))}
@@ -88,58 +118,59 @@ const Footer = () => {
 
                     {/* For Nurses */}
                     <div>
-                        <h3 className="font-semibold text-sm mb-3 relative inline-block">
+                        <h3 className="font-bold text-xs mb-4 uppercase tracking-wider text-white relative inline-block">
                             For Nurses
-                            <div className="absolute bottom-0 left-0 w-8 h-0.5 bg-linear-to-br from-violet-500 to-purple-500 rounded-full mt-0.5" />
+                            <div className="absolute -bottom-1 left-0 w-6 h-0.5 bg-purple-600 rounded-full" />
                         </h3>
-                        <ul className="space-y-1.5">
+                        <ul className="space-y-2">
                             {forNurse.map((link) => (
                                 <li key={link.name}>
                                     <Link
                                         to={link.path}
-                                        className="group flex items-center gap-1.5 text-gray-300 hover:text-violet-400 transition-all duration-300 text-xs"
+                                        className="group flex items-center gap-1 text-gray-400 hover:text-purple-300 hover:translate-x-0.5 transition-all duration-300 text-xs"
                                     >
-                                        <ChevronRight className="w-2.5 h-2.5 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all" />
-                                        <span>{link.name}</span>
+                                        <ChevronRight className="w-3 h-3 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all text-purple-400" />
+                                        <span className="font-medium">{link.name}</span>
                                     </Link>
                                 </li>
                             ))}
                         </ul>
                     </div>
 
-                    {/* Trust Badges - Compact */}
+                    {/* Why Choose Us trust items */}
                     <div>
-                        <h3 className="font-semibold text-sm mb-3 relative inline-block">
+                        <h3 className="font-bold text-xs mb-4 uppercase tracking-wider text-white relative inline-block">
                             Why Choose Us
-                            <div className="absolute bottom-0 left-0 w-8 h-0.5 bg-linear-to-br from-violet-500 to-purple-500 rounded-full mt-0.5" />
+                            <div className="absolute -bottom-1 left-0 w-6 h-0.5 bg-purple-600 rounded-full" />
                         </h3>
                         <div className="space-y-2">
                             {whychoose.map((item, idx) => (
-                                <p key={idx} className="text-xs text-gray-300">
-                                    {item.text}
-                                </p>
+                                <div key={idx} className="flex items-center gap-2 text-gray-300">
+                                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                                    <span className="text-xs font-medium text-gray-300">{item.text}</span>
+                                </div>
                             ))}
                         </div>
                     </div>
                 </div>
 
-                <Separator className="my-5 bg-gray-700" />
+                <Separator className="my-5 bg-white/10" />
 
-                {/* Bottom Bar - Compact */}
-                <div className="flex flex-col md:flex-row items-center justify-between gap-2">
-                    <p className="text-xs text-gray-400">
+                {/* Bottom Bar */}
+                <div className="flex flex-col md:flex-row items-center justify-between gap-3">
+                    <p className="text-[11px] text-gray-500 font-medium">
                         © {currentYear} CareNest. All rights reserved.
                     </p>
 
                     <div className="flex items-center gap-4">
-                        <Link to="/privacy" className="text-xs text-gray-400 hover:text-violet-400 transition-colors">
-                            Privacy
+                        <Link to="/privacy" className="text-[11px] text-gray-500 hover:text-purple-400 transition-colors font-medium">
+                            Privacy Policy
                         </Link>
-                        <Link to="/terms" className="text-xs text-gray-400 hover:text-violet-400 transition-colors">
-                            Terms
+                        <Link to="/terms" className="text-[11px] text-gray-500 hover:text-purple-400 transition-colors font-medium">
+                            Terms of Service
                         </Link>
-                        <Link to="/cookies" className="text-xs text-gray-400 hover:text-violet-400 transition-colors">
-                            Cookies
+                        <Link to="/cookies" className="text-[11px] text-gray-500 hover:text-purple-400 transition-colors font-medium">
+                            Cookie Settings
                         </Link>
                     </div>
                 </div>
@@ -149,8 +180,3 @@ const Footer = () => {
 }
 
 export default Footer
-
-
-
-
-

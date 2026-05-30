@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import PublicLayout from '@/pages/public/PublicLayout'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -11,16 +12,16 @@ import {
   MapPin, 
   Clock, 
   Send, 
-  MessageSquare,
   HelpCircle,
   ChevronDown,
   ChevronUp,
   Loader2,
-  CheckCircle,
-  HelpCircleIcon
+  ArrowLeft
 } from 'lucide-react'
 
 const Contact = () => {
+  const navigate = useNavigate()
+  const [mounted, setMounted] = useState(false)
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -31,6 +32,10 @@ const Contact = () => {
   
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [activeFaq, setActiveFaq] = useState(null)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
@@ -43,7 +48,6 @@ const Contact = () => {
   const handleSubmit = (e) => {
     e.preventDefault()
     
-    // Basic validation
     if (!formData.name || !formData.email || !formData.message) {
       toast.error('Please fill out all required fields (*)')
       return
@@ -51,12 +55,10 @@ const Contact = () => {
 
     setIsSubmitting(true)
 
-    // Simulate backend submission delay
     setTimeout(() => {
       setIsSubmitting(false)
       toast.success('Thank you! Your message has been sent successfully. A care coordinator will contact you shortly.')
       
-      // Reset form
       setFormData({
         name: '',
         email: '',
@@ -69,36 +71,32 @@ const Contact = () => {
 
   const contactInfos = [
     {
-      icon: <Phone className="w-5 h-5 text-primary" />,
+      icon: <Phone className="w-4 h-4 text-purple-600" />,
       title: 'Call or Text Us',
       detail1: '+1 (800) 555-CARE',
-      detail2: 'Toll-free, available 24/7 for urgent care bookings.',
-      actionLabel: 'Call Now',
+      detail2: 'Urgent care support available 24/7.',
       actionUrl: 'tel:+18005552273'
     },
     {
-      icon: <Mail className="w-5 h-5 text-primary" />,
-      title: 'Email Communications',
+      icon: <Mail className="w-4 h-4 text-purple-600" />,
+      title: 'Email Support',
       detail1: 'support@carenest.com',
-      detail2: 'Expect a response from our medical coordinators within 2 hours.',
-      actionLabel: 'Send Email',
+      detail2: 'Response within 2 coordinators-hours.',
       actionUrl: 'mailto:support@carenest.com'
     },
     {
-      icon: <MapPin className="w-5 h-5 text-primary" />,
+      icon: <MapPin className="w-4 h-4 text-purple-600" />,
       title: 'Headquarters Office',
       detail1: 'Suite 400, Medical Care Blvd',
       detail2: 'New York, NY 10001',
-      actionLabel: 'Get Directions',
       actionUrl: 'https://maps.google.com'
     },
     {
-      icon: <Clock className="w-5 h-5 text-primary" />,
+      icon: <Clock className="w-4 h-4 text-purple-600" />,
       title: 'Operating Hours',
-      detail1: 'Care Coordinators: 24/7 Available',
-      detail2: 'Nurse Matchmaking: Daily 8:00 AM - 10:00 PM EST',
-      actionLabel: 'Book Consultation',
-      actionUrl: '#book'
+      detail1: '24/7 Support Desk',
+      detail2: 'Nurse Matchmaking: 8 AM - 10 PM EST',
+      actionUrl: '#'
     }
   ]
 
@@ -131,93 +129,112 @@ const Contact = () => {
 
   return (
     <PublicLayout>
-      {/* Hero Header */}
-      <section className="bg-linear-to-br from-primary/20 via-background to-secondary/10 py-16 px-4 text-center border-b border-border/50">
-        <div className="max-w-3xl mx-auto">
-          <Badge className="mb-4" variant="secondary">
-            💬 Contact CareNest Support
-          </Badge>
-          <h1 className="text-4xl font-extrabold text-foreground leading-tight mb-4">
-            We are Always Here for You
-          </h1>
-          <p className="text-muted-foreground text-md md:text-lg leading-relaxed max-w-xl mx-auto">
-            Whether you are ready to book a private nurse, need assistance with your dashboard, or simply have questions about clinical safety, our team is standing by to assist you 24/7.
-          </p>
+      {/* Hero Header - Compact & Solid */}
+      <section className="bg-slate-50 py-8 px-4 border-b border-purple-100/30">
+        <div className="max-w-6xl mx-auto">
+          {/* Back Button */}
+          <div className="mb-4 flex justify-start">
+            <Button
+              variant="ghost"
+              onClick={() => navigate(-1)}
+              style={{ borderRadius: '9999px' }}
+              className="gap-2 hover:bg-purple-100 hover:text-purple-700 text-gray-600 transition-all duration-300 rounded-full border-none text-xs font-semibold"
+            >
+              <ArrowLeft className="w-3.5 h-3.5 text-purple-600" />
+              Back
+            </Button>
+          </div>
+
+          <div className={`max-w-3xl mx-auto transition-all duration-1000 ease-out transform ${
+            mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+          }`}>
+            <div className="text-center">
+              <Badge className="mb-2 bg-purple-100 text-purple-700 hover:bg-purple-100 border-none animate-fade-in text-[10px]" variant="secondary">
+                💬 Contact CareNest Support
+              </Badge>
+              <h1 className="text-2.25xl md:text-3xl font-bold text-gray-900 leading-tight mb-2">
+                We are Always Here for You
+              </h1>
+              <p className="text-gray-500 text-xs md:text-sm leading-relaxed max-w-md mx-auto">
+                Whether you are ready to book a private nurse, need assistance with your dashboard, or simply have questions about clinical safety, our team is standing by to assist you 24/7.
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* Info & Form Section */}
-      <section className="py-20 px-4">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+      {/* Info & Form Section - Sleek & Compact */}
+      <section className="py-12 px-4 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             
-            {/* Left Side: Contact Information Cards */}
+            {/* Left Side: Consolidated Directory & Map Info */}
             <div className="lg:col-span-5 space-y-6">
-              <div className="mb-6">
-                <Badge variant="outline" className="mb-2">Info Center</Badge>
-                <h2 className="text-2xl font-bold text-foreground">How Can We Connect?</h2>
-                <p className="text-sm text-muted-foreground mt-1">Select the channel that is most convenient for you.</p>
+              
+              {/* Directory Card */}
+              <div 
+                style={{ borderRadius: '1.25rem' }}
+                className="bg-slate-50 border border-purple-100/50 p-5 shadow-[0_4px_20px_-4px_rgba(168,85,247,0.03)]"
+              >
+                <div className="mb-4">
+                  <Badge variant="outline" className="mb-1.5 bg-white text-purple-700 border-purple-200 text-[9px] px-2 py-0.5">Info Directory</Badge>
+                  <h2 className="text-base font-semibold text-gray-900">How Can We Connect?</h2>
+                  <p className="text-[11px] text-gray-400 mt-0.5">Select the channel that is most convenient for you.</p>
+                </div>
+
+                <div className="space-y-3.5">
+                  {contactInfos.map((info, idx) => (
+                    <div key={idx} className="flex gap-3 group items-start border-b border-purple-50/50 pb-3 last:border-0 last:pb-0">
+                      <div className="w-8 h-8 rounded-lg bg-white border border-purple-100/60 flex items-center justify-center shrink-0 mt-0.5 shadow-inner transition-colors group-hover:bg-purple-50">
+                        {info.icon}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-semibold text-gray-900 text-xs">{info.title}</h3>
+                        <p className="text-[11px] font-semibold text-purple-700 mt-0.5">{info.detail1}</p>
+                        <p className="text-[10px] text-gray-400 mt-0.5 leading-relaxed">{info.detail2}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4">
-                {contactInfos.map((info, idx) => (
-                  <div key={idx} className="p-5 bg-background rounded-xl border border-border/50 shadow-xs hover:border-primary/40 hover:shadow-md transition-all duration-300 flex gap-4">
-                    <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
-                      {info.icon}
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="font-bold text-foreground text-sm">{info.title}</h3>
-                      <p className="text-sm font-semibold text-primary mt-1">{info.detail1}</p>
-                      <p className="text-xs text-muted-foreground mt-1 leading-relaxed">{info.detail2}</p>
-                      <a 
-                        href={info.actionUrl} 
-                        className="inline-block mt-3 text-xs font-semibold text-primary hover:underline"
-                        onClick={(e) => {
-                          if (info.actionUrl.startsWith('#')) e.preventDefault();
-                        }}
-                      >
-                        {info.actionLabel} &rarr;
-                      </a>
-                    </div>
+              {/* Compact Map Card */}
+              <div 
+                style={{ borderRadius: '1.25rem' }}
+                className="p-4 bg-slate-50 border border-purple-100/50 shadow-[0_4px_15px_-4px_rgba(168,85,247,0.02)] overflow-hidden relative"
+              >
+                <div className="relative z-10 flex items-center gap-3.5">
+                  <div className="w-9 h-9 bg-purple-50 rounded-full flex items-center justify-center shrink-0">
+                    <MapPin className="w-4.5 h-4.5 text-purple-600 animate-bounce" />
                   </div>
-                ))}
-              </div>
-
-              {/* Map Placeholder Graphic */}
-              <div className="p-6 bg-linear-to-br from-primary/5 via-background to-secondary/5 rounded-2xl border border-border/60 shadow-xs overflow-hidden relative group">
-                <div className="absolute inset-0 bg-grid-slate-100 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))] dark:bg-grid-slate-700/20"></div>
-                <div className="relative z-10 flex flex-col items-center text-center p-4">
-                  <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-3">
-                    <MapPin className="w-6 h-6 text-primary animate-bounce" />
+                  <div>
+                    <h4 className="font-semibold text-xs text-gray-900">Global Coverage, Local Care</h4>
+                    <p className="text-[10px] text-gray-400 leading-relaxed max-w-xs mt-0.5">
+                      Check real-time nurse availability near you from your patient portal.
+                    </p>
+                    <Badge className="bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500/10 border-0 flex gap-1 items-center w-fit mt-1.5 px-2 py-0.5 text-[9px]">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping"></span>
+                      Nurses active near you now
+                    </Badge>
                   </div>
-                  <h4 className="font-bold text-sm text-foreground mb-1">Global Coverage, Local Care</h4>
-                  <p className="text-xs text-muted-foreground leading-relaxed max-w-xs mb-3">
-                    Our verified nurses are distributed across the country. Check real-time nurse availability near you from your patient portal.
-                  </p>
-                  <Badge className="bg-emerald-500/10 text-emerald-500 hover:bg-emerald-500/10 border-0 flex gap-1 items-center">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping"></span>
-                    Nurses active near you now
-                  </Badge>
                 </div>
               </div>
             </div>
 
-            {/* Right Side: Contact Form Card */}
+            {/* Right Side: Contact Form Card - Trimmed Height */}
             <div className="lg:col-span-7">
-              <Card className="shadow-xl border-primary/10 relative overflow-hidden h-fit">
-                {/* Visual Accent Top Bar */}
-                <div className="h-1.5 bg-linear-to-r from-primary via-primary/80 to-secondary"></div>
-                <CardContent className="p-6 md:p-10">
-                  <div className="mb-8">
-                    <Badge variant="outline" className="mb-2">Inquiry Form</Badge>
-                    <h2 className="text-2xl font-bold text-foreground">Send Us a Direct Message</h2>
-                    <p className="text-sm text-muted-foreground mt-1">We respond to every submission within 2 working hours.</p>
+              <Card style={{ borderRadius: '1.25rem' }} className="shadow-lg border-purple-100/50 overflow-hidden h-fit">
+                <CardContent className="p-5 md:p-6">
+                  <div className="mb-4">
+                    <Badge variant="outline" className="mb-1.5 text-purple-700 border-purple-200 text-[9px] px-2 py-0.5">Inquiry Form</Badge>
+                    <h2 className="text-base font-semibold text-gray-900">Send Us a Direct Message</h2>
+                    <p className="text-[11px] text-gray-400 mt-0.5">We respond to every submission within 2 working hours.</p>
                   </div>
 
-                  <form onSubmit={handleSubmit} className="space-y-5">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  <form onSubmit={handleSubmit} className="space-y-4.5">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div className="space-y-1.5">
-                        <label className="text-xs font-semibold text-foreground flex gap-0.5">
+                        <label className="text-[11px] font-semibold text-gray-600 flex gap-0.5">
                           Full Name <span className="text-destructive">*</span>
                         </label>
                         <Input 
@@ -227,11 +244,12 @@ const Contact = () => {
                           value={formData.name}
                           onChange={handleInputChange}
                           required
-                          className="h-10 text-sm"
+                          style={{ borderRadius: '0.5rem' }}
+                          className="h-9.5 text-xs border-purple-100"
                         />
                       </div>
                       <div className="space-y-1.5">
-                        <label className="text-xs font-semibold text-foreground flex gap-0.5">
+                        <label className="text-[11px] font-semibold text-gray-600 flex gap-0.5">
                           Email Address <span className="text-destructive">*</span>
                         </label>
                         <Input 
@@ -241,15 +259,16 @@ const Contact = () => {
                           value={formData.email}
                           onChange={handleInputChange}
                           required
-                          className="h-10 text-sm"
+                          style={{ borderRadius: '0.5rem' }}
+                          className="h-9.5 text-xs border-purple-100"
                         />
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div className="space-y-1.5">
-                        <label className="text-xs font-semibold text-foreground">
-                          Phone Number (Optional)
+                        <label className="text-[11px] font-semibold text-gray-600">
+                          Phone Number
                         </label>
                         <Input 
                           type="tel" 
@@ -257,18 +276,20 @@ const Contact = () => {
                           placeholder="+1 (555) 019-2834" 
                           value={formData.phone}
                           onChange={handleInputChange}
-                          className="h-10 text-sm"
+                          style={{ borderRadius: '0.5rem' }}
+                          className="h-9.5 text-xs border-purple-100"
                         />
                       </div>
                       <div className="space-y-1.5">
-                        <label className="text-xs font-semibold text-foreground">
+                        <label className="text-[11px] font-semibold text-gray-600">
                           Subject Topic
                         </label>
                         <select 
                           name="subject" 
                           value={formData.subject}
                           onChange={handleInputChange}
-                          className="w-full h-10 rounded-lg border border-input bg-background px-3 py-1 text-sm outline-none transition-all focus:border-ring focus:ring-3 focus:ring-ring/50"
+                          style={{ borderRadius: '0.5rem' }}
+                          className="w-full h-9.5 rounded-lg border border-purple-100 bg-background px-3 py-1.5 text-xs outline-none transition-all focus:border-purple-300 focus:ring-2 focus:ring-purple-200"
                         >
                           <option value="General Inquiry">General Inquiry</option>
                           <option value="Billing & Pricing">Billing & Pricing</option>
@@ -280,33 +301,35 @@ const Contact = () => {
                     </div>
 
                     <div className="space-y-1.5">
-                      <label className="text-xs font-semibold text-foreground flex gap-0.5">
+                      <label className="text-[11px] font-semibold text-gray-600 flex gap-0.5">
                         Your Detailed Message <span className="text-destructive">*</span>
                       </label>
                       <textarea 
                         name="message" 
-                        rows="5"
+                        rows="3.5"
                         placeholder="Please write the details of your inquiry here..."
                         value={formData.message}
                         onChange={handleInputChange}
                         required
-                        className="w-full rounded-lg border border-input bg-transparent px-3 py-2 text-sm outline-none transition-all placeholder:text-muted-foreground focus:border-ring focus:ring-3 focus:ring-ring/50 dark:bg-input/30"
+                        style={{ borderRadius: '0.5rem' }}
+                        className="w-full rounded-lg border border-purple-100 bg-transparent px-3 py-2 text-xs outline-none transition-all placeholder:text-gray-400 focus:border-purple-300 focus:ring-2 focus:ring-purple-200"
                       ></textarea>
                     </div>
 
                     <Button 
                       type="submit" 
-                      className="w-full h-10 mt-2 bg-primary hover:bg-primary/95 text-white flex items-center justify-center gap-2 font-bold text-sm shadow-md transition-all duration-300"
+                      style={{ borderRadius: '0.5rem' }}
+                      className="w-full h-9.5 mt-2 bg-purple-600 hover:bg-purple-700 text-white flex items-center justify-center gap-2 font-bold text-xs shadow-md border-none transition-all duration-300"
                       disabled={isSubmitting}
                     >
                       {isSubmitting ? (
                         <>
-                          <Loader2 className="w-4 h-4 animate-spin" />
+                          <Loader2 className="w-3.5 h-3.5 animate-spin" />
                           Sending your inquiry...
                         </>
                       ) : (
                         <>
-                          <Send className="w-4 h-4" />
+                          <Send className="w-3.5 h-3.5" />
                           Send Message
                         </>
                       )}
@@ -320,43 +343,44 @@ const Contact = () => {
         </div>
       </section>
 
-      {/* Frequently Asked Questions Accordion Section */}
-      <section className="py-20 px-4 bg-muted/20 border-t border-border/50">
+      {/* Frequently Asked Questions Accordion Section - Sleek & Solid */}
+      <section className="py-12 px-4 bg-slate-50 border-t border-purple-100/30">
         <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-16">
-            <Badge className="mb-3" variant="outline">FAQ</Badge>
-            <h2 className="text-3xl font-extrabold text-foreground mb-4">
+          <div className="text-center mb-10">
+            <span className="text-[10px] font-semibold text-purple-600 uppercase tracking-widest bg-purple-50 px-3 py-1 rounded-full inline-block mb-2">FAQ</span>
+            <h2 className="text-xl md:text-2.5xl font-bold text-gray-900 mb-2 tracking-tight">
               Frequently Answered Questions
             </h2>
-            <p className="text-muted-foreground max-w-md mx-auto">
+            <p className="text-gray-400 max-w-xs mx-auto text-xs">
               Quick answers to the most common queries about booking, vetting, and matching.
             </p>
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-3">
             {faqs.map((faq, idx) => {
               const isOpen = activeFaq === idx
               return (
                 <div 
                   key={idx} 
-                  className="bg-background rounded-xl border border-border/50 shadow-xs overflow-hidden transition-all duration-300"
+                  style={{ borderRadius: '0.75rem' }}
+                  className="bg-white border border-purple-100/50 shadow-[0_2px_10px_-4px_rgba(168,85,247,0.02)] overflow-hidden transition-all duration-300"
                 >
                   <button 
                     onClick={() => toggleFaq(idx)}
-                    className="w-full p-5 flex items-center justify-between text-left font-bold text-foreground text-md hover:bg-muted/10 transition-colors"
+                    className="w-full p-3.5 flex items-center justify-between text-left font-semibold text-gray-900 text-xs hover:bg-purple-50/30 transition-colors"
                   >
-                    <span className="flex items-center gap-2.5">
-                      <HelpCircle className="w-4 h-4 text-primary shrink-0" />
+                    <span className="flex items-center gap-2 text-xs">
+                      <HelpCircle className="w-3.5 h-3.5 text-purple-600 shrink-0" />
                       {faq.q}
                     </span>
                     {isOpen ? (
-                      <ChevronUp className="w-4 h-4 text-muted-foreground shrink-0" />
+                      <ChevronUp className="w-3.5 h-3.5 text-gray-400 shrink-0" />
                     ) : (
-                      <ChevronDown className="w-4 h-4 text-muted-foreground shrink-0" />
+                      <ChevronDown className="w-3.5 h-3.5 text-gray-400 shrink-0" />
                     )}
                   </button>
                   {isOpen && (
-                    <div className="px-5 pb-5 pt-1 text-sm text-muted-foreground leading-relaxed border-t border-border/20 bg-muted/5 animate-in fade-in slide-in-from-top-1">
+                    <div className="px-3.5 pb-3.5 pt-0.5 text-[11px] text-gray-500 leading-relaxed border-t border-purple-50/50 bg-slate-50/30 animate-in fade-in slide-in-from-top-1">
                       {faq.a}
                     </div>
                   )}

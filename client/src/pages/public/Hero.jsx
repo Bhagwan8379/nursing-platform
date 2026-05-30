@@ -1,6 +1,6 @@
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { ArrowRight, Stethoscope, Phone, Calendar, UserCheck } from 'lucide-react'
+import { ArrowRight, Phone, Calendar, UserCheck, Stethoscope } from 'lucide-react'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -12,19 +12,32 @@ const Hero = () => {
         { value: '4.8★', label: 'Average Rating' },
     ]
     return (
-        <section className="bg-linear-to-br from-primary/30 via-background to-secondary/20 py-20 px-4">
-            <div className="max-w-7xl mx-auto">
+        <section className="relative h-screen flex items-center px-4 overflow-hidden -mt-16">
+            {/* Background Video */}
+            <video
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="absolute inset-0 w-full h-full object-cover"
+                style={{ zIndex: 0 }}
+            >
+                <source src={import.meta.env.VITE_HERO_VIDEO_URL} type="video/mp4" />
+            </video>
+
+
+            <div className="w-full max-w-7xl mx-auto relative pt-16 pb-12" style={{ zIndex: 2 }}>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
 
                     <div>
                         <Badge className="mb-4" variant="secondary">
                             🏥 Trusted Home Nursing Platform
                         </Badge>
-                        <h1 className="text-4xl md:text-5xl font-bold text-foreground leading-tight mb-4">
+                        <h1 className="text-4xl md:text-5xl font-bold text-white leading-tight mb-4">
                             Professional Nursing Care{' '}
                             <span className="text-primary">At Your Home</span>
                         </h1>
-                        <p className="text-muted-foreground text-lg mb-8 leading-relaxed">
+                        <p className="text-white/80 text-lg mb-8 leading-relaxed">
                             Connect with verified, qualified nurses for at-home medical care.
                             From post-surgery care to elder care — we have you covered.
                         </p>
@@ -32,6 +45,8 @@ const Hero = () => {
                             <Button
                                 size="lg"
                                 onClick={() => navigate('/customer/register')}
+                                className="text-white font-semibold shadow-lg hover:shadow-[0_0_24px_rgba(192,38,211,0.55)] hover:opacity-90 transition-all duration-300"
+                                style={{ background: 'linear-gradient(135deg, #c026d3 0%, #9333ea 100%)' }}
                             >
                                 Book a Nurse
                                 <ArrowRight className="w-4 h-4 ml-2" />
@@ -39,52 +54,83 @@ const Hero = () => {
                             <Button
                                 size="lg"
                                 variant="outline"
-                                onClick={() => navigate('/services')}>View Services </Button>
+                                onClick={() => navigate('/services')}
+                                className="border-white text-white bg-transparent hover:bg-white/10 hover:border-white transition-all duration-300"
+                            >View Services </Button>
                         </div>
 
                         <div className="flex gap-8 mt-10">
                             {data.map((stat) => (
                                 <div key={stat.label}>
                                     <p className="text-2xl font-bold text-primary">{stat.value}</p>
-                                    <p className="text-sm text-muted-foreground">{stat.label}</p>
+                                    <p className="text-sm text-white/70">{stat.label}</p>
                                 </div>
                             ))}
                         </div>
                     </div>
 
-                    {/* Animated Professional Right Side Image */}
-                    <div className="hidden md:flex items-center justify-center relative">
-                        <div className="relative w-80 h-80 bg-linear-to-br from-primary/10 via-background to-secondary/20 rounded-full flex items-center justify-center shadow-2xl animate-float backdrop-blur-sm border border-primary/20">
-                            {/* DJ Style Rotating Ring Border */}
-                            <div className="absolute inset-0 rounded-full border-4 border-dashed border-primary/60 animate-spin-slow"></div>
+                    {/* ── Right Side: Orbit Ring ── */}
+                    <div className="hidden md:flex items-center justify-end w-full pr-10">
+                        <div style={{ position: 'relative', width: '200px', height: '200px' }}>
 
-                            {/* Second Ring for DJ effect */}
-                            <div className="absolute inset-2 rounded-full border-2 border-dotted border-secondary/50 animate-spin-reverse"></div>
+                            {/* ── Single Rotating Ring — dashed, spins slow ── */}
+                            <div
+                                className="absolute rounded-full animate-spin-slow"
+                                style={{
+                                    width: '200px', height: '200px',
+                                    border: '1.5px dashed rgba(192,132,252,0.5)',
+                                    top: 0, left: 0,
+                                }}
+                            />
 
-                            {/* Main Icon */}
-                            <div className="relative z-10">
-                                <Stethoscope className="w-40 h-40 text-primary/40" />
+                            {/* Fixed Badge — 24/7 — top center (0°) */}
+                            <div className="absolute" style={{ top: '-16px', left: '50%', transform: 'translateX(-50%)', zIndex: 20 }}>
+                                <div style={{ background: 'rgba(255,255,255,0.12)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.25)' }}
+                                    className="flex items-center gap-1.5 rounded-full px-3 py-1.5 whitespace-nowrap shadow-lg">
+                                    <UserCheck className="w-3 h-3 text-green-300 shrink-0" />
+                                    <span className="text-[11px] font-semibold text-white">24/7 Available</span>
+                                </div>
                             </div>
-                        </div>
 
-                        {/* Floating Elements */}
-                        <div className="absolute top-4 right-8 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-xl px-3 py-2 shadow-lg border border-primary/20">
-                            <div className="flex items-center gap-2">
-                                <UserCheck className="w-4 h-4 text-primary" />
-                                <span className="text-xs font-medium">24/7 Available</span>
+                            {/* Fixed Badge — Emergency Support — bottom-left (~210°) */}
+                            <div className="absolute" style={{ bottom: '4px', left: '-46px', zIndex: 20 }}>
+                                <div style={{ background: 'rgba(255,255,255,0.12)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.25)' }}
+                                    className="flex items-center gap-1.5 rounded-full px-3 py-1.5 whitespace-nowrap shadow-lg">
+                                    <Phone className="w-3 h-3 text-red-300 shrink-0" />
+                                    <span className="text-[11px] font-semibold text-white">Emergency Support</span>
+                                </div>
                             </div>
-                        </div>
-                        <div className="absolute bottom-12 -left-4 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-xl px-3 py-2 shadow-lg  border border-primary/20">
-                            <div className="flex items-center gap-2">
-                                <Phone className="w-4 h-4 text-primary" />
-                                <span className="text-xs font-medium">Emergency Support</span>
+
+                            {/* Fixed Badge — Easy Booking — bottom-right (~330°) */}
+                            <div className="absolute" style={{ bottom: '4px', right: '-46px', zIndex: 20 }}>
+                                <div style={{ background: 'rgba(255,255,255,0.12)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.25)' }}
+                                    className="flex items-center gap-1.5 rounded-full px-3 py-1.5 whitespace-nowrap shadow-lg">
+                                    <Calendar className="w-3 h-3 text-blue-300 shrink-0" />
+                                    <span className="text-[11px] font-semibold text-white">Easy Booking</span>
+                                </div>
                             </div>
-                        </div>
-                        <div className="absolute top-24 -right-3 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-xl px-3 py-2 shadow-lg animation-delay-500 border border-primary/20">
-                            <div className="flex items-center gap-2">
-                                <Calendar className="w-4 h-4 text-primary" />
-                                <span className="text-xs font-medium">Flexible Booking</span>
+
+                            <div
+                                className="absolute rounded-full flex items-center justify-center animate-float"
+                                style={{
+                                    width: '96px', height: '96px',
+                                    top: '52px', left: '52px', // Centered: (200 - 96) / 2 = 52px
+                                    background: 'rgba(109, 40, 217, 0.92)',
+                                    boxShadow: '0 8px 24px rgba(109, 40, 217, 0.3)',
+                                    border: '2px solid rgba(216,180,254,0.3)',
+                                    backdropFilter: 'blur(12px)',
+                                    zIndex: 10,
+                                }}
+                            >
+                                {/* Stethoscope icon — solid light purple */}
+                                <Stethoscope
+                                    className="w-10 h-10 text-purple-100"
+                                    style={{
+                                        strokeWidth: 1.5,
+                                    }}
+                                />
                             </div>
+
                         </div>
                     </div>
 

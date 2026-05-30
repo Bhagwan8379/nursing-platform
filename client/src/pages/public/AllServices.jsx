@@ -15,9 +15,7 @@ import {
   CheckCircle2, 
   ChevronRight, 
   X,
-  Stethoscope,
-  Heart,
-  Plus
+  Stethoscope
 } from 'lucide-react'
 
 const AllServices = () => {
@@ -40,7 +38,6 @@ const AllServices = () => {
         } 
       })
     } else {
-      // Patient is logged in! Redirect directly to dashboard with selected service state
       navigate('/customer/dashboard', { 
         state: { 
           selectedServiceId: service._id, 
@@ -52,29 +49,30 @@ const AllServices = () => {
 
   return (
     <PublicLayout>
-      <section className="py-12 px-4 bg-linear-to-b from-background via-purple-50/10 to-muted/20 min-h-screen">
+      <section className="py-12 px-4 bg-slate-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
-          {/* Header */}
+          {/* Header Back Button */}
           <div className="mb-6 flex justify-start">
             <Button
               variant="ghost"
-              onClick={() => navigate('/')}
-              className="gap-2 hover:bg-primary/10 hover:text-primary transition-all duration-300 rounded-full"
+              onClick={() => navigate(-1)}
+              style={{ borderRadius: '9999px' }}
+              className="gap-2 hover:bg-purple-100 hover:text-purple-700 text-gray-600 transition-all duration-300 rounded-full border-none text-xs font-semibold"
             >
-              <ArrowLeft className="w-4 h-4" />
-              Back to Home
+              <ArrowLeft className="w-3.5 h-3.5 text-purple-600" />
+              Back
             </Button>
           </div>
 
-          <div className="text-center mb-16">
-            <Badge variant="outline" className="mb-4 px-3 py-1 text-sm border-primary/30 text-primary bg-primary/5">
+          <div className="text-center mb-12">
+            <Badge variant="outline" className="mb-3 px-2.5 py-0.5 text-[11px] border-purple-200 text-purple-700 bg-purple-50">
               <Sparkles className="w-3 h-3 mr-1" />
               Clinical Offerings
             </Badge>
-            <h1 className="text-4xl md:text-5xl font-extrabold text-foreground mb-4 tracking-tight">
+            <h1 className="text-2.5xl md:text-3.25xl font-bold text-gray-900 mb-3 tracking-tight">
               Comprehensive Doorstep Care
             </h1>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto leading-relaxed">
+            <p className="text-gray-500 text-xs md:text-sm max-w-xl mx-auto leading-relaxed">
               Explore our range of professional, background-verified home healthcare services. Click on any care package below to view complete details, qualifications, and proceed with booking.
             </p>
           </div>
@@ -83,40 +81,41 @@ const AllServices = () => {
           {apiLoading ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
               {[1, 2, 3, 4, 5, 6].map(i => (
-                <div key={i} className="h-72 bg-slate-100 animate-pulse rounded-2xl border border-border/40"></div>
+                <div key={i} className="h-72 bg-slate-100 animate-pulse rounded-2xl border border-purple-100/30"></div>
               ))}
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {displayServices.map((service) => (
                 <Card
                   key={service._id}
-                  className="group cursor-pointer hover:shadow-xl hover:border-primary/40 hover:-translate-y-1 transition-all duration-300 border border-border/60 bg-card/60 backdrop-blur-xs flex flex-col h-full overflow-hidden"
+                  style={{ borderRadius: '1.25rem' }}
+                  className="group cursor-pointer hover:shadow-xl hover:border-purple-200/80 hover:-translate-y-1 transition-all duration-300 border border-purple-100/50 bg-white flex flex-col h-full overflow-hidden"
                   onClick={() => setSelectedService(service)}
                 >
-                  <CardContent className="p-6 flex flex-col h-full flex-1">
+                  <CardContent className="p-5 flex flex-col h-full flex-1">
                     {/* Header: Icon & Category */}
-                    <div className="flex justify-between items-center mb-4">
-                      <div className="w-14 h-14 rounded-2xl bg-linear-to-br from-primary/10 to-primary/5 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                        <Stethoscope className="w-8 h-8 text-primary" />
+                    <div className="flex justify-between items-center mb-3">
+                      <div className="w-11 h-11 rounded-xl bg-purple-50 flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
+                        <Stethoscope className="w-5 h-5 text-purple-600" />
                       </div>
-                      <Badge variant="secondary" className="text-xs font-semibold bg-primary/10 text-primary hover:bg-primary/20 border-0">
+                      <Badge variant="secondary" className="text-[10px] font-semibold bg-purple-50 text-purple-700 hover:bg-purple-100/60 border-0 px-2 py-0.5">
                         {service.category}
                       </Badge>
                     </div>
 
                     {/* Content */}
-                    <h3 className="font-extrabold text-xl text-slate-800 mb-2 group-hover:text-primary transition-colors min-h-[28px] line-clamp-2">
+                    <h3 className="font-bold text-base text-gray-900 mb-1.5 group-hover:text-purple-600 transition-colors line-clamp-2">
                       {service.name}
                     </h3>
-                    <p className="text-sm text-muted-foreground mb-6 line-clamp-3 leading-relaxed flex-1">
+                    <p className="text-xs text-gray-400 mb-4 line-clamp-3 leading-relaxed flex-1">
                       {service.description}
                     </p>
 
                     {/* Highlights */}
-                    <div className="bg-slate-50/80 p-3 rounded-xl border border-slate-100 text-xs text-slate-600 mb-6 space-y-1.5 mt-auto">
-                      <p className="flex items-center gap-1.5 font-semibold text-slate-800">
-                        <Award className="w-3.5 h-3.5 text-primary shrink-0" />
+                    <div className="bg-slate-50/80 p-2.5 rounded-xl border border-slate-100 text-[11px] text-gray-500 mb-4 space-y-1 mt-auto">
+                      <p className="flex items-center gap-1.5 font-semibold text-gray-800">
+                        <Award className="w-3.5 h-3.5 text-purple-600 shrink-0" />
                         Requires: {service.requiredQualification}
                       </p>
                       <p className="flex items-center gap-1.5 text-emerald-600 font-semibold">
@@ -126,19 +125,20 @@ const AllServices = () => {
                     </div>
 
                     {/* Footer: Price & More Button */}
-                    <div className="flex items-center justify-between pt-4 border-t border-border/50">
+                    <div className="flex items-center justify-between pt-3.5 border-t border-purple-50/50">
                       <div>
-                        <p className="text-[10px] text-muted-foreground uppercase tracking-wider font-bold">Standard Fee</p>
-                        <div className="flex items-center gap-0.5 text-primary">
-                          <IndianRupee className="w-4 h-4 shrink-0" />
-                          <span className="text-2xl font-black">{service.price}</span>
-                          <span className="text-xs text-muted-foreground">/visit</span>
+                        <p className="text-[9px] text-gray-400 uppercase tracking-wider font-semibold">Standard Fee</p>
+                        <div className="flex items-center gap-0.5 text-purple-600">
+                          <IndianRupee className="w-3.5 h-3.5 shrink-0" />
+                          <span className="text-xl font-bold">{service.price}</span>
+                          <span className="text-[11px] text-gray-500 font-medium">/visit</span>
                         </div>
                       </div>
                       <Button
                         size="sm"
                         variant="outline"
-                        className="group-hover:bg-primary group-hover:text-white border-primary/30 group-hover:border-primary transition-all duration-300 font-bold flex gap-1 items-center text-xs"
+                        style={{ borderRadius: '0.50rem' }}
+                        className="group-hover:bg-purple-600 group-hover:text-white border-purple-200 group-hover:border-purple-600 transition-all duration-300 font-semibold flex gap-1 items-center text-[11px] text-purple-700"
                       >
                         View Details
                         <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
@@ -151,9 +151,9 @@ const AllServices = () => {
           )}
 
           {/* Quick FAQ / Features Banner */}
-          <div className="mt-16 text-center max-w-2xl mx-auto border-t border-border/50 pt-10">
-            <p className="text-xs text-muted-foreground leading-relaxed">
-              * Rates shown are standard visit package base prices. Long-term post-operative, elder companion care, or round-the-clock intensive care shifts can be custom quoted through our support team at <a href="mailto:support@carenest.com" className="text-primary hover:underline">support@carenest.com</a>.
+          <div className="mt-16 text-center max-w-2xl mx-auto border-t border-purple-100/30 pt-10">
+            <p className="text-xs text-gray-400 leading-relaxed">
+              * Rates shown are standard visit package base prices. Long-term post-operative, elder companion care, or round-the-clock intensive care shifts can be custom quoted through our support team at <a href="mailto:support@carenest.com" className="text-purple-600 hover:underline">support@carenest.com</a>.
             </p>
           </div>
         </div>
@@ -169,22 +169,22 @@ const AllServices = () => {
           />
 
           {/* Modal Container */}
-          <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto relative z-10 border border-slate-100 flex flex-col animate-in fade-in zoom-in-95 duration-200">
+          <div className="bg-white rounded-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto relative z-10 border border-slate-100 flex flex-col animate-in fade-in zoom-in-95 duration-200">
             
-            {/* Visual Accent Top Bar */}
-            <div className="h-1.5 bg-linear-to-r from-primary via-primary/80 to-secondary shrink-0"></div>
+            {/* Visual Accent Top Bar - Solid Purple */}
+            <div className="h-1.5 bg-purple-600 shrink-0"></div>
 
             {/* Modal Header */}
             <div className="p-6 border-b border-slate-100 flex justify-between items-start gap-4 shrink-0">
-              <div className="flex gap-4 items-center">
-                <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center shrink-0">
-                  <Stethoscope className="w-8 h-8 text-primary" />
+              <div className="flex gap-3 items-center">
+                <div className="w-11 h-11 rounded-xl bg-purple-50 flex items-center justify-center shrink-0">
+                  <Stethoscope className="w-5 h-5 text-purple-600" />
                 </div>
                 <div>
-                  <Badge className="bg-primary/10 text-primary hover:bg-primary/15 border-0 mb-1 font-bold text-[10px]">
+                  <Badge className="bg-purple-50 text-purple-700 hover:bg-purple-100 border-0 mb-1 font-semibold text-[9px]">
                     {selectedService.category.toUpperCase()}
                   </Badge>
-                  <h2 className="text-2xl font-black text-slate-800 leading-snug">{selectedService.name}</h2>
+                  <h2 className="text-lg font-bold text-gray-900 leading-snug">{selectedService.name}</h2>
                 </div>
               </div>
               <Button 
@@ -193,34 +193,34 @@ const AllServices = () => {
                 onClick={() => setSelectedService(null)}
                 className="rounded-full hover:bg-slate-100 shrink-0"
               >
-                <X className="w-5 h-5 text-slate-400" />
+                <X className="w-4 h-4 text-slate-400" />
               </Button>
             </div>
 
             {/* Modal Scrollable Body */}
-            <div className="p-6 md:p-8 space-y-6 overflow-y-auto flex-1">
+            <div className="p-5 md:p-6 space-y-5 overflow-y-auto flex-1">
               
               {/* Detailed Description */}
-              <div className="space-y-2">
-                <h4 className="text-xs font-black uppercase text-slate-500 tracking-wider">Service Overview</h4>
-                <p className="text-sm text-slate-600 leading-relaxed">
+              <div className="space-y-1.5">
+                <h4 className="text-[10px] font-bold uppercase text-gray-400 tracking-wider">Service Overview</h4>
+                <p className="text-xs text-gray-500 leading-relaxed">
                   {selectedService.description}
                 </p>
               </div>
 
               {/* Quick Spec Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-slate-50/80 p-4 rounded-2xl border border-slate-100 text-sm">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-slate-50/80 p-3.5 rounded-2xl border border-slate-100 text-xs">
                 <div className="space-y-1">
-                  <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider">Service Bound</span>
-                  <div className="flex items-center gap-1.5 font-bold text-emerald-600">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
+                  <span className="text-[9px] uppercase font-semibold text-gray-400 tracking-wider">Service Bound</span>
+                  <div className="flex items-center gap-1.5 font-semibold text-emerald-600">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
                     <span>Active until procedure is completed</span>
                   </div>
                 </div>
                 <div className="space-y-1">
-                  <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider">Required Caregiver License</span>
-                  <div className="flex items-center gap-1.5 font-bold text-slate-800">
-                    <Award className="w-4 h-4 text-primary shrink-0" />
+                  <span className="text-[9px] uppercase font-semibold text-gray-400 tracking-wider">Required Caregiver License</span>
+                  <div className="flex items-center gap-1.5 font-semibold text-gray-800">
+                    <Award className="w-3.5 h-3.5 text-purple-600 shrink-0" />
                     <span>{selectedService.requiredQualification}</span>
                   </div>
                 </div>
@@ -228,13 +228,13 @@ const AllServices = () => {
             </div>
 
             {/* Modal Sticky Footer Booking Trigger */}
-            <div className="p-6 border-t border-slate-100 bg-slate-50 flex items-center justify-between gap-4 shrink-0">
+            <div className="p-5 border-t border-slate-100 bg-slate-50 flex items-center justify-between gap-4 shrink-0">
               <div>
-                <p className="text-[10px] text-muted-foreground uppercase tracking-wider font-bold">Total Session Fee</p>
-                <div className="flex items-center gap-0.5 text-slate-800">
-                  <IndianRupee className="w-5 h-5 shrink-0" />
-                  <span className="text-3xl font-black">{selectedService.price}</span>
-                  <span className="text-sm text-muted-foreground">/visit</span>
+                <p className="text-[9px] text-gray-400 uppercase tracking-wider font-semibold">Total Session Fee</p>
+                <div className="flex items-center gap-0.5 text-gray-900">
+                  <IndianRupee className="w-4 h-4 shrink-0" />
+                  <span className="text-xl font-bold">{selectedService.price}</span>
+                  <span className="text-[11px] text-gray-400 font-medium">/visit</span>
                 </div>
               </div>
               <div className="flex gap-2">
@@ -251,7 +251,8 @@ const AllServices = () => {
                     setSelectedService(null)
                     handleBookService(svc)
                   }}
-                  className="bg-primary hover:bg-primary/95 text-white font-bold text-sm px-6 py-2 rounded-xl flex gap-2 items-center shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300"
+                  style={{ borderRadius: '0.75rem' }}
+                  className="bg-purple-600 hover:bg-purple-700 text-white font-bold text-sm px-6 py-2 rounded-xl flex gap-2 items-center shadow-lg border-none hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300"
                 >
                   Book This Service
                   <ChevronRight className="w-4 h-4" />
