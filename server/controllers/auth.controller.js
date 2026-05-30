@@ -96,7 +96,7 @@ exports.loginNurse = asyncHandler(async (req, res) => {
         }
 
         const token = jwt.sign({ userId: isFound._id, name: isFound.name }, process.env.JWT_KEY, { expiresIn: '7d' })
-        res.cookie('nurse', token, { maxAge: 1000 * 60 * 60 * 24 * 7, httpOnly: true, secure: process.env.NODE_ENV === 'production', sameSite: 'lax' })
+        res.cookie('nurse', token, { maxAge: 1000 * 60 * 60 * 24 * 7, httpOnly: true, secure: true, sameSite: 'none' })
         res.json({
             message: 'Login Success', result: {
                 _id: isFound._id,
@@ -140,7 +140,7 @@ exports.loginPatient = asyncHandler(async (req, res) => {
         }
 
         const token = jwt.sign({ userId: isFound._id, name: isFound.name }, process.env.JWT_KEY, { expiresIn: '7d' })
-        res.cookie('customer', token, { maxAge: 1000 * 60 * 60 * 24 * 7, httpOnly: true, secure: process.env.NODE_ENV === 'production', sameSite: 'lax' })
+        res.cookie('customer', token, { maxAge: 1000 * 60 * 60 * 24 * 7, httpOnly: true, secure: true, sameSite: 'none' })
         res.json({
             message: 'Login Success', result: {
                 _id: isFound._id,
@@ -184,7 +184,7 @@ exports.loginAdmin = asyncHandler(async (req, res) => {
         }
 
         const token = jwt.sign({ userId: isFound._id, name: isFound.name }, process.env.JWT_KEY, { expiresIn: '7d' })
-        res.cookie('admin', token, { maxAge: 1000 * 60 * 60 * 24 * 7, httpOnly: true, secure: process.env.NODE_ENV === 'production', sameSite: 'lax' })
+        res.cookie('admin', token, { maxAge: 1000 * 60 * 60 * 24 * 7, httpOnly: true, secure: true, sameSite: 'none' })
         res.json({
             message: 'Login Success', result: {
                 _id: isFound._id,
@@ -205,7 +205,7 @@ exports.loginAdmin = asyncHandler(async (req, res) => {
 
 exports.logoutAdmin = asyncHandler(async (req, res) => {
     try {
-        res.clearCookie('admin')
+        res.clearCookie('admin', { httpOnly: true, secure: true, sameSite: 'none' })
         res.json({ message: "Admin Logout Successfully" })
     } catch (error) {
         console.log("Error From : logoutAdmin")
@@ -215,7 +215,7 @@ exports.logoutAdmin = asyncHandler(async (req, res) => {
 
 exports.logoutNurse = asyncHandler(async (req, res) => {
     try {
-        res.clearCookie('nurse')
+        res.clearCookie('nurse', { httpOnly: true, secure: true, sameSite: 'none' })
         res.json({ message: "Nurse Logout Successfully" })
     } catch (error) {
         console.log("Error From : logoutNurse")
@@ -225,7 +225,7 @@ exports.logoutNurse = asyncHandler(async (req, res) => {
 
 exports.logoutCustomer = asyncHandler(async (req, res) => {
     try {
-        res.clearCookie('customer')
+        res.clearCookie('customer', { httpOnly: true, secure: true, sameSite: 'none' })
         res.json({ message: "Customer Logout Successfully" })
     } catch (error) {
         console.log("Error From : logoutCustomer")

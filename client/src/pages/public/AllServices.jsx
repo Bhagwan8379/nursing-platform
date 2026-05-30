@@ -169,36 +169,36 @@ const AllServices = () => {
           />
 
           {/* Modal Container */}
-          <div className="bg-white rounded-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto relative z-10 border border-slate-100 flex flex-col animate-in fade-in zoom-in-95 duration-200">
+          <div className="bg-white rounded-2xl sm:rounded-3xl shadow-2xl max-w-2xl w-[95%] sm:w-full max-h-[92vh] sm:max-h-[90vh] overflow-y-auto relative z-10 border border-slate-100 flex flex-col animate-in fade-in zoom-in-95 duration-200">
             
             {/* Visual Accent Top Bar - Solid Purple */}
             <div className="h-1.5 bg-purple-600 shrink-0"></div>
 
             {/* Modal Header */}
-            <div className="p-6 border-b border-slate-100 flex justify-between items-start gap-4 shrink-0">
-              <div className="flex gap-3 items-center">
-                <div className="w-11 h-11 rounded-xl bg-purple-50 flex items-center justify-center shrink-0">
+            <div className="p-4 sm:p-5 border-b border-slate-100 flex justify-between items-start gap-3 shrink-0">
+              <div className="flex gap-2.5 sm:gap-3 items-center">
+                <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-purple-50 flex items-center justify-center shrink-0">
                   <Stethoscope className="w-5 h-5 text-purple-600" />
                 </div>
                 <div>
                   <Badge className="bg-purple-50 text-purple-700 hover:bg-purple-100 border-0 mb-1 font-semibold text-[9px]">
                     {selectedService.category.toUpperCase()}
                   </Badge>
-                  <h2 className="text-lg font-bold text-gray-900 leading-snug">{selectedService.name}</h2>
+                  <h2 className="text-base sm:text-lg font-bold text-gray-900 leading-snug">{selectedService.name}</h2>
                 </div>
               </div>
               <Button 
                 variant="ghost" 
                 size="icon" 
                 onClick={() => setSelectedService(null)}
-                className="rounded-full hover:bg-slate-100 shrink-0"
+                className="rounded-full hover:bg-slate-100 shrink-0 w-8 h-8 sm:w-9 sm:h-9"
               >
                 <X className="w-4 h-4 text-slate-400" />
               </Button>
             </div>
 
             {/* Modal Scrollable Body */}
-            <div className="p-5 md:p-6 space-y-5 overflow-y-auto flex-1">
+            <div className="p-4 sm:p-5 md:p-6 space-y-4 sm:space-y-5 overflow-y-auto flex-1">
               
               {/* Detailed Description */}
               <div className="space-y-1.5">
@@ -209,7 +209,7 @@ const AllServices = () => {
               </div>
 
               {/* Quick Spec Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-slate-50/80 p-3.5 rounded-2xl border border-slate-100 text-xs">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-slate-50/80 p-3 sm:p-3.5 rounded-2xl border border-slate-100 text-xs">
                 <div className="space-y-1">
                   <span className="text-[9px] uppercase font-semibold text-gray-400 tracking-wider">Service Bound</span>
                   <div className="flex items-center gap-1.5 font-semibold text-emerald-600">
@@ -228,20 +228,20 @@ const AllServices = () => {
             </div>
 
             {/* Modal Sticky Footer Booking Trigger */}
-            <div className="p-5 border-t border-slate-100 bg-slate-50 flex items-center justify-between gap-4 shrink-0">
-              <div>
+            <div className="p-4 sm:p-5 border-t border-slate-100 bg-slate-50 flex flex-col sm:flex-row items-center justify-between gap-4 shrink-0">
+              <div className="w-full sm:w-auto text-center sm:text-left">
                 <p className="text-[9px] text-gray-400 uppercase tracking-wider font-semibold">Total Session Fee</p>
-                <div className="flex items-center gap-0.5 text-gray-900">
+                <div className="flex items-center justify-center sm:justify-start gap-0.5 text-gray-900">
                   <IndianRupee className="w-4 h-4 shrink-0" />
                   <span className="text-xl font-bold">{selectedService.price}</span>
                   <span className="text-[11px] text-gray-400 font-medium">/visit</span>
                 </div>
               </div>
-              <div className="flex gap-2">
+              <div className="flex w-full sm:w-auto gap-2">
                 <Button 
                   variant="outline" 
                   onClick={() => setSelectedService(null)}
-                  className="rounded-xl"
+                  className="flex-1 sm:flex-initial rounded-xl"
                 >
                   Cancel
                 </Button>
@@ -252,7 +252,7 @@ const AllServices = () => {
                     handleBookService(svc)
                   }}
                   style={{ borderRadius: '0.75rem' }}
-                  className="bg-purple-600 hover:bg-purple-700 text-white font-bold text-sm px-6 py-2 rounded-xl flex gap-2 items-center shadow-lg border-none hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300"
+                  className="flex-1 sm:flex-initial bg-purple-600 hover:bg-purple-700 text-white font-bold text-sm px-5 py-2 rounded-xl flex gap-2 items-center justify-center shadow-lg border-none hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300"
                 >
                   Book This Service
                   <ChevronRight className="w-4 h-4" />
