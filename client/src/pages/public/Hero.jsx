@@ -12,18 +12,24 @@ const Hero = () => {
         { value: '4.8★', label: 'Average Rating' },
     ]
     return (
-        <section className="relative h-screen flex items-center px-4 overflow-hidden -mt-16">
+        <section className="relative h-screen flex items-center px-4 overflow-hidden -mt-16 bg-slate-950">
             {/* Background Video */}
             <video
                 autoPlay
                 loop
                 muted
                 playsInline
-                className="absolute inset-0 w-full h-full object-cover"
+                className="absolute inset-0 w-full h-full min-w-full min-h-full object-cover object-center"
                 style={{ zIndex: 0 }}
             >
                 <source src={import.meta.env.VITE_HERO_VIDEO_URL} type="video/mp4" />
             </video>
+
+            {/* Premium Dark Overlay to guarantee high readability of text on all screen sizes */}
+            <div 
+                className="absolute inset-0 bg-gradient-to-r from-slate-950/80 to-slate-950/40 md:from-slate-950/70 md:to-slate-950/20" 
+                style={{ zIndex: 1 }} 
+            />
 
 
             <div className="w-full max-w-7xl mx-auto relative pt-16 pb-12" style={{ zIndex: 2 }}>
