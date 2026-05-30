@@ -76,11 +76,10 @@ const Navbar = () => {
                             <Link
                                 key={link.name}
                                 to={link.path}
-                                className={`px-3 py-2 text-sm font-medium rounded-lg transition-all duration-300 ${
-                                    isActive(link.path)
-                                        ? showSolidNavbar ? 'text-purple-700 font-semibold' : 'text-white font-semibold'
-                                        : showSolidNavbar ? 'text-gray-600 hover:text-purple-700' : 'text-white/70 hover:text-white'
-                                }`}
+                                className={`px-3 py-2 text-sm font-medium rounded-lg transition-all duration-300 ${isActive(link.path)
+                                    ? showSolidNavbar ? 'text-purple-700 font-semibold' : 'text-white font-semibold'
+                                    : showSolidNavbar ? 'text-gray-600 hover:text-purple-700' : 'text-white/70 hover:text-white'
+                                    }`}
                             >
                                 {link.name}
                             </Link>
@@ -97,11 +96,10 @@ const Navbar = () => {
                                         <Button
                                             variant="outline"
                                             size="sm"
-                                            className={`transition-all duration-300 ${
-                                                showSolidNavbar
-                                                    ? 'border-gray-300 text-gray-700 bg-white hover:bg-gray-50 hover:border-gray-400'
-                                                    : 'border-white/30 text-white bg-white/10 hover:bg-white/20 hover:border-white/50'
-                                            }`}
+                                            className={`transition-all duration-300 ${showSolidNavbar
+                                                ? 'border-gray-300 text-gray-700 bg-white hover:bg-gray-50 hover:border-gray-400'
+                                                : 'border-white/30 text-white bg-white/10 hover:bg-white/20 hover:border-white/50'
+                                                }`}
                                         >
                                             <LogIn className="w-4 h-4 mr-1" />
                                             Login
@@ -178,9 +176,8 @@ const Navbar = () => {
 
                     {/* Mobile Menu Button */}
                     <button
-                        className={`md:hidden p-2 rounded-lg transition-colors ${
-                            showSolidNavbar ? 'text-gray-900 hover:bg-gray-100' : 'text-white hover:bg-white/10'
-                        }`}
+                        className={`md:hidden p-2 rounded-lg transition-colors ${showSolidNavbar ? 'text-gray-900 hover:bg-gray-100' : 'text-white hover:bg-white/10'
+                            }`}
                         onClick={() => setIsOpen(!isOpen)}
                     >
                         {isOpen
@@ -199,18 +196,17 @@ const Navbar = () => {
                                 <Link
                                     key={link.name}
                                     to={link.path}
-                                    className={`px-3 py-2 text-sm font-medium rounded-lg transition-all ${
-                                        isActive(link.path)
-                                            ? showSolidNavbar ? 'text-purple-700 font-semibold bg-purple-50' : 'text-white font-semibold bg-white/10'
-                                            : showSolidNavbar ? 'text-gray-600 hover:text-purple-700 hover:bg-purple-50' : 'text-white/70 hover:text-white hover:bg-white/10'
-                                    }`}
+                                    className={`px-3 py-2 text-sm font-medium rounded-lg transition-all ${isActive(link.path)
+                                        ? showSolidNavbar ? 'text-purple-700 font-semibold bg-purple-50' : 'text-white font-semibold bg-white/10'
+                                        : showSolidNavbar ? 'text-gray-600 hover:text-purple-700 hover:bg-purple-50' : 'text-white/70 hover:text-white hover:bg-white/10'
+                                        }`}
                                     onClick={() => setIsOpen(false)}
                                 >
                                     {link.name}
                                 </Link>
                             ))}
 
-                                <div className="pt-3 mt-2 border-t" style={{ borderColor: 'rgba(160,80,255,0.18)' }}>
+                            <div className="pt-3 mt-2 border-t" style={{ borderColor: 'rgba(160,80,255,0.18)' }}>
                                 {!isLoggedIn ? (
                                     <>
                                         <div className="px-2 mb-2">
