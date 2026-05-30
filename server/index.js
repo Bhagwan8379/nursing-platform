@@ -12,12 +12,10 @@ const app = express()
 app.use(cookieParser())
 app.use(express.json())
 app.use(cors({
-    origin: true,
+    origin: true || 'http://localhost:5173',
     credentials: true
 }))
 
-// Handle preflight OPTIONS requests — must use same corsOptions (NOT bare cors())
-app.options('*', cors(corsOptions))
 
 
 app.use('/api/auth', require('./routes/auth.routes'))
