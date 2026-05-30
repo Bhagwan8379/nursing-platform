@@ -20,7 +20,7 @@ exports.adminProtected = async (req, res, next) => {
 
 
     } catch (error) {
-        console.log("Error From : adminProtected")
+        console.log("Error From : adminProtected", error)
         return res.status(500).json({ message: "Internal Server Error" })
     }
 }
@@ -46,7 +46,7 @@ exports.nurseProtected = async (req, res, next) => {
 
 
     } catch (error) {
-        console.log("Error From : nurseProtected")
+        console.log("Error From : nurseProtected", error)
         return res.status(500).json({ message: "Internal Server Error" })
     }
 }
@@ -71,7 +71,7 @@ exports.customerProtected = async (req, res, next) => {
 
 
     } catch (error) {
-        console.log("Error From : customerProtected")
+        console.log("Error From : customerProtected", error)
         return res.status(500).json({ message: "Internal Server Error" })
     }
 }

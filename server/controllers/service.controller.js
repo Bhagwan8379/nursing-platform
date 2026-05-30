@@ -10,7 +10,7 @@ exports.getAllServices = asyncHandler(async (req, res) => {
         const result = await Service.find({ isActive: true })
         res.json({ message: "All Services Fetched Successfully", result })
     } catch (error) {
-        console.log('Error From : getAllServices')
+        console.log('Error From : getAllServices', error)
         return res.status(500).json({ message: "Internal Server Error" })
     }
 })

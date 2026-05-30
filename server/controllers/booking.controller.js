@@ -117,7 +117,7 @@ exports.getMyBookings = asyncHandler(async (req, res) => {
 
         res.json({ message: "My Bookings Fetched Successfully", result })
     } catch (error) {
-        console.log('Error From : getMyBookings')
+        console.log('Error From : getMyBookings', error)
         return res.status(500).json({ message: "Internal Server Error" })
     }
 })
