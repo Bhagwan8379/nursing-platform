@@ -1,40 +1,123 @@
+import React, { lazy, Suspense } from 'react'
 import { Routes, Route } from 'react-router-dom'
-import Home from './pages/public/Home'
-import Service from './pages/public/Service'
-import AllServices from './pages/public/AllServices'
-import About from './pages/public/About'
-import Contact from './pages/public/Contact'
-import PatientLogin from './pages/auth/PatientLogin'
-import NurseLogin from './pages/auth/NurseLogin'
-import AdminLogin from './pages/auth/AdminLogin'
-import PatientRegister from './pages/auth/PatientRegister'
-import NurseRegister from './pages/auth/NurseRegister'
-import PatientDashboard from './pages/customer/PatientDashboard'
-import NurseDashboard from './pages/nurse/NurseDashboard'
-import AdminDashboard from './pages/admin/AdminDashboard'
+import { ErrorBoundary } from 'react-error-boundary'
 import { Toaster } from '@/components/ui/sonner'
+import PremiumLoader from './components/PremiumLoader'
+
+const FallBackError = lazy(() => import('./components/FallBackError'))
+
+// Lazy loaded page components
+const Home = lazy(() => import('./pages/public/Home'))
+const Service = lazy(() => import('./pages/public/Service'))
+const AllServices = lazy(() => import('./pages/public/AllServices'))
+const About = lazy(() => import('./pages/public/About'))
+const Contact = lazy(() => import('./pages/public/Contact'))
+
+// Auth portals
+const PatientLogin = lazy(() => import('./pages/auth/PatientLogin'))
+const NurseLogin = lazy(() => import('./pages/auth/NurseLogin'))
+const AdminLogin = lazy(() => import('./pages/auth/AdminLogin'))
+const PatientRegister = lazy(() => import('./pages/auth/PatientRegister'))
+const NurseRegister = lazy(() => import('./pages/auth/NurseRegister'))
+
+// Dashboards
+const PatientDashboard = lazy(() => import('./pages/customer/PatientDashboard'))
+const NurseDashboard = lazy(() => import('./pages/nurse/NurseDashboard'))
+const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'))
 
 function App() {
   return (
     <>
       <Toaster />
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/services" element={<AllServices />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact />} />
-        
+        <Route path="/" element={
+          <Suspense fallback={<PremiumLoader />}>
+            <ErrorBoundary FallbackComponent={FallBackError}>
+              <Home />
+            </ErrorBoundary>
+          </Suspense>
+        } />
+        <Route path="/services" element={
+          <Suspense fallback={<PremiumLoader />}>
+            <ErrorBoundary FallbackComponent={FallBackError}>
+              <AllServices />
+            </ErrorBoundary>
+          </Suspense>
+        } />
+        <Route path="/about" element={
+          <Suspense fallback={<PremiumLoader />}>
+            <ErrorBoundary FallbackComponent={FallBackError}>
+              <About />
+            </ErrorBoundary>
+          </Suspense>
+        } />
+        <Route path="/contact" element={
+          <Suspense fallback={<PremiumLoader />}>
+            <ErrorBoundary FallbackComponent={FallBackError}>
+              <Contact />
+            </ErrorBoundary>
+          </Suspense>
+        } />
+
         {/* Auth Portals */}
-        <Route path="/customer/login" element={<PatientLogin />} />
-        <Route path="/nurse/login" element={<NurseLogin />} />
-        <Route path="/admin/login" element={<AdminLogin />} />
-        <Route path="/customer/register" element={<PatientRegister />} />
-        <Route path="/nurse/register" element={<NurseRegister />} />
-        
+        <Route path="/customer/login" element={
+          <Suspense fallback={<PremiumLoader />}>
+            <ErrorBoundary FallbackComponent={FallBackError}>
+              <PatientLogin />
+            </ErrorBoundary>
+          </Suspense>
+        } />
+        <Route path="/nurse/login" element={
+          <Suspense fallback={<PremiumLoader />}>
+            <ErrorBoundary FallbackComponent={FallBackError}>
+              <NurseLogin />
+            </ErrorBoundary>
+          </Suspense>
+        } />
+        <Route path="/admin/login" element={
+          <Suspense fallback={<PremiumLoader />}>
+            <ErrorBoundary FallbackComponent={FallBackError}>
+              <AdminLogin />
+            </ErrorBoundary>
+          </Suspense>
+        } />
+        <Route path="/customer/register" element={
+          <Suspense fallback={<PremiumLoader />}>
+            <ErrorBoundary FallbackComponent={FallBackError}>
+              <PatientRegister />
+            </ErrorBoundary>
+          </Suspense>
+        } />
+        <Route path="/nurse/register" element={
+          <Suspense fallback={<PremiumLoader />}>
+            <ErrorBoundary FallbackComponent={FallBackError}>
+              <NurseRegister />
+            </ErrorBoundary>
+          </Suspense>
+        } />
+
         {/* Portals & Dashboards */}
-        <Route path="/customer/dashboard" element={<PatientDashboard />} />
-        <Route path="/nurse/dashboard" element={<NurseDashboard />} />
-        <Route path="/admin/dashboard" element={<AdminDashboard />} />
+        <Route path="/customer/dashboard" element={
+          <Suspense fallback={<PremiumLoader />}>
+            <ErrorBoundary FallbackComponent={FallBackError}>
+              <PatientDashboard />
+            </ErrorBoundary>
+          </Suspense>
+        } />
+        <Route path="/nurse/dashboard" element={
+          <Suspense fallback={<PremiumLoader />}>
+            <ErrorBoundary FallbackComponent={FallBackError}>
+              <NurseDashboard />
+            </ErrorBoundary>
+          </Suspense>
+        } />
+        <Route path="/admin/dashboard" element={
+          <Suspense fallback={<PremiumLoader />}>
+            <ErrorBoundary FallbackComponent={FallBackError}>
+              <AdminDashboard />
+            </ErrorBoundary>
+          </Suspense>
+        } />
       </Routes>
     </>
   )
