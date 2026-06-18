@@ -27,6 +27,7 @@ const NurseRegister = lazy(() => import('./pages/auth/NurseRegister'))
 const PatientDashboard = lazy(() => import('./pages/customer/PatientDashboard'))
 const NurseDashboard = lazy(() => import('./pages/nurse/NurseDashboard'))
 const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'))
+const NotFound = lazy(() => import('./pages/public/NotFound'))
 
 function App() {
   return (
@@ -139,6 +140,13 @@ function App() {
           <Suspense fallback={<PremiumLoader />}>
             <ErrorBoundary FallbackComponent={FallBackError}>
               <AdminDashboard />
+            </ErrorBoundary>
+          </Suspense>
+        } />
+        <Route path="*" element={
+          <Suspense fallback={<PremiumLoader />}>
+            <ErrorBoundary FallbackComponent={FallBackError}>
+              <NotFound />
             </ErrorBoundary>
           </Suspense>
         } />
