@@ -27,6 +27,9 @@ app.use('/api/service', require('./routes/service.routes'))
 app.use('/api/payment', require('./routes/payment.routes'))
 app.use('/api/review', require('./routes/review.routes'))
 app.use('/api/notification', require('./routes/notification.routes'))
+app.use('/api/milestones', require('./routes/milestone.routes'))
+app.use('/api/feedback', require('./routes/feedback.routes'))
+
 
 
 app.use((req, res) => {

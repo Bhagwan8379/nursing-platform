@@ -3,8 +3,19 @@ import { authApi } from "./apis/authApi";
 import { adminApi } from "./apis/adminApi";
 import { nurseApi } from "./apis/nurseApi";
 import { bookingApi } from "./apis/bookingApi";
-import authReducer from "./slice/authSlice";
+import authReducer, { logoutAdmin, logoutNurse, logoutPatient } from "./slice/authSlice";
 
+const authErrorMiddleware = (store) => (next) => (action) => {
+    if (action.type?.endsWith('/rejected') && action.payload?.status === 401) {
+        store.dispatch(logoutAdmin())
+        store.dispatch(logoutNurse())
+        store.dispatch(logoutPatient())
+        localStorage.removeItem('admin')
+        localStorage.removeItem('nurse')
+        localStorage.removeItem('patient')
+    }
+    return next(action)
+}
 
 const reduxStore = configureStore({
     reducer: {
@@ -19,7 +30,8 @@ const reduxStore = configureStore({
         authApi.middleware,
         adminApi.middleware,
         nurseApi.middleware,
-        bookingApi.middleware
+        bookingApi.middleware,
+        authErrorMiddleware
     ]
 })
 

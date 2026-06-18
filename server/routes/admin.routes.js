@@ -7,6 +7,8 @@ const {
     suspendNurse
 } = require('../controllers/nurse.controller')
 
+const { createMilestone, deleteMilestone } = require('../controllers/milestone.controller')
+
 const {
     getAllCustomers,
     blockCustomer,
@@ -54,4 +56,8 @@ router
     .get('/get-all-bookings', adminProtected, getAllBookings)
     .get('/available-nurses/:bookingId', adminProtected, getAvailableNurses)
     .put('/assign/:bookingId', adminProtected, assignNurse)
+
+    // Milestones Management
+    .post('/milestones', adminProtected, createMilestone)
+    .delete('/milestones/:id', adminProtected, deleteMilestone)
 module.exports = router

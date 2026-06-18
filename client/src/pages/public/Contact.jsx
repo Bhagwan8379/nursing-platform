@@ -1,22 +1,21 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import PublicLayout from '@/pages/public/PublicLayout'
-import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { toast } from 'sonner'
-import { 
-  Phone, 
-  Mail, 
-  MapPin, 
-  Clock, 
-  Send, 
+import {
+  Phone,
+  Mail,
+  MapPin,
+  Clock,
+  Send,
   HelpCircle,
   ChevronDown,
   ChevronUp,
   Loader2,
-  ArrowLeft
+  ArrowLeft,
+  CheckCircle2
 } from 'lucide-react'
 
 const Contact = () => {
@@ -29,25 +28,27 @@ const Contact = () => {
     subject: 'General Inquiry',
     message: ''
   })
-  
+
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [activeFaq, setActiveFaq] = useState(null)
+  const faqRef = useRef(null)
+  const [faqVisible, setFaqVisible] = useState(false)
 
   useEffect(() => {
     setMounted(true)
+    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) setFaqVisible(true) }, { threshold: 0.1 })
+    if (faqRef.current) obs.observe(faqRef.current)
+    return () => obs.disconnect()
   }, [])
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }))
+    setFormData(prev => ({ ...prev, [name]: value }))
   }
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    
+
     if (!formData.name || !formData.email || !formData.message) {
       toast.error('Please fill out all required fields (*)')
       return
@@ -57,15 +58,8 @@ const Contact = () => {
 
     setTimeout(() => {
       setIsSubmitting(false)
-      toast.success('Thank you! Your message has been sent successfully. A care coordinator will contact you shortly.')
-      
-      setFormData({
-        name: '',
-        email: '',
-        phone: '',
-        subject: 'General Inquiry',
-        message: ''
-      })
+      toast.success('Thank you! Your message has been sent. A care coordinator will contact you shortly.')
+      setFormData({ name: '', email: '', phone: '', subject: 'General Inquiry', message: '' })
     }, 1500)
   }
 
@@ -73,37 +67,41 @@ const Contact = () => {
     {
       icon: <Phone className="w-4 h-4 text-purple-600" />,
       title: 'Call or Text Us',
-      detail1: '+1 (800) 555-CARE',
+      detail1: '+91 98765 43210',
       detail2: 'Urgent care support available 24/7.',
-      actionUrl: 'tel:+18005552273'
+      actionUrl: 'tel:+919876543210',
+      color: 'from-purple-50 to-purple-100/60'
     },
     {
-      icon: <Mail className="w-4 h-4 text-purple-600" />,
+      icon: <Mail className="w-4 h-4 text-blue-600" />,
       title: 'Email Support',
-      detail1: 'support@carenest.com',
-      detail2: 'Response within 2 coordinators-hours.',
-      actionUrl: 'mailto:support@carenest.com'
+      detail1: 'care@carenest.in',
+      detail2: 'Response within 2 business hours.',
+      actionUrl: 'mailto:care@carenest.in',
+      color: 'from-blue-50 to-blue-100/60'
     },
     {
-      icon: <MapPin className="w-4 h-4 text-purple-600" />,
-      title: 'Headquarters Office',
-      detail1: 'Suite 400, Medical Care Blvd',
-      detail2: 'New York, NY 10001',
-      actionUrl: 'https://maps.google.com'
+      icon: <MapPin className="w-4 h-4 text-emerald-600" />,
+      title: 'Headquarters',
+      detail1: 'Aurangabad, Maharashtra',
+      detail2: 'Serving all of Maharashtra.',
+      actionUrl: 'https://maps.google.com',
+      color: 'from-emerald-50 to-emerald-100/60'
     },
     {
-      icon: <Clock className="w-4 h-4 text-purple-600" />,
+      icon: <Clock className="w-4 h-4 text-amber-600" />,
       title: 'Operating Hours',
       detail1: '24/7 Support Desk',
-      detail2: 'Nurse Matchmaking: 8 AM - 10 PM EST',
-      actionUrl: '#'
-    }
+      detail2: 'Nurse Matchmaking: 8 AM–10 PM IST',
+      actionUrl: '#',
+      color: 'from-amber-50 to-amber-100/60'
+    },
   ]
 
   const faqs = [
     {
       q: 'How do you verify the credentials of the nurses?',
-      a: 'Every nurse on CareNest goes through a comprehensive multi-step vetting process. We verify active nursing licenses directly with State Boards of Nursing, perform criminal background checks, verify clinical references, and conduct interview checks to ensure the highest standards of safety and professionalism.'
+      a: 'Every nurse on CareNest goes through a comprehensive multi-step vetting process. We verify active nursing licenses, perform criminal background checks, verify clinical references, and conduct interview checks to ensure the highest standards of safety and professionalism.'
     },
     {
       q: 'Can I book a nurse for emergency/immediate assistance?',
@@ -111,16 +109,16 @@ const Contact = () => {
     },
     {
       q: 'How is payment handled on CareNest?',
-      a: 'All booking payments are handled securely through our integrated digital payment gateway. Clients are billed transparently with hourly rates calculated up-front. Nurses receive direct automatic transfers upon successful validation and completion of their designated shifts.'
+      a: 'All booking payments are handled securely through our integrated digital payment gateway. Clients are billed transparently with rates calculated up-front. Nurses receive direct automatic transfers upon successful completion of their designated shifts.'
     },
     {
       q: 'What if I want to change or replace my matched nurse?',
-      a: 'Your peace of mind is paramount. If you or your family member feels that the matched nurse is not the absolute best fit for your emotional or clinical requirements, you can request a replacement immediately through your Patient Dashboard or by calling our support line.'
+      a: 'Your peace of mind is paramount. If you or your family member feels that the matched nurse is not the best fit, you can request a replacement immediately through your Patient Dashboard or by calling our support line.'
     },
     {
       q: 'Do you accept health insurance plans?',
-      a: 'While CareNest operates on a direct private pay basis to keep services highly accessible and immediate, we provide fully detailed medical invoices, itemized receipts, and clinical reports so you can submit them to your insurance provider or Health Savings Account (HSA/FSA) for reimbursement.'
-    }
+      a: 'While CareNest operates on a direct private pay basis, we provide fully detailed medical invoices, itemized receipts, and clinical reports so you can submit them to your insurance provider or Health Savings Account (HSA/FSA) for reimbursement.'
+    },
   ]
 
   const toggleFaq = (index) => {
@@ -129,229 +127,230 @@ const Contact = () => {
 
   return (
     <PublicLayout>
-      {/* Hero Header - Compact & Solid */}
-      <section className="bg-slate-50 py-8 px-4 border-b border-purple-100/30">
+
+      {/* ─── HERO HEADER ──────────────────────── */}
+      <section className="relative overflow-hidden pt-10 pb-6 px-4" style={{ background: 'linear-gradient(180deg, #faf5ff 0%, #f5f3ff 60%, #fff 100%)' }}>
+        <div className="absolute top-0 right-0 w-[500px] h-[400px] opacity-[0.07] pointer-events-none" style={{ background: 'radial-gradient(ellipse, #9333ea 0%, transparent 70%)', filter: 'blur(80px)' }} />
+
         <div className="max-w-6xl mx-auto">
-          {/* Back Button */}
-          <div className="mb-4 flex justify-start">
+          <div className="mb-2">
             <Button
               variant="ghost"
               onClick={() => navigate(-1)}
-              style={{ borderRadius: '9999px' }}
-              className="gap-2 hover:bg-purple-100 hover:text-purple-700 text-gray-600 transition-all duration-300 rounded-full border-none text-xs font-semibold"
+              className="gap-2 hover:bg-purple-100 hover:text-purple-700 text-gray-500 transition-all duration-300 rounded-full text-sm font-medium"
             >
-              <ArrowLeft className="w-3.5 h-3.5 text-purple-600" />
+              <ArrowLeft className="w-4 h-4 text-purple-500" />
               Back
             </Button>
-          </div>
-
-          <div className={`max-w-3xl mx-auto transition-all duration-1000 ease-out transform ${
-            mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-          }`}>
-            <div className="text-center">
-              <Badge className="mb-2 bg-purple-100 text-purple-700 hover:bg-purple-100 border-none animate-fade-in text-[10px]" variant="secondary">
-                💬 Contact CareNest Support
-              </Badge>
-              <h1 className="text-2.25xl md:text-3xl font-bold text-gray-900 leading-tight mb-2">
-                We are Always Here for You
-              </h1>
-              <p className="text-gray-500 text-xs md:text-sm leading-relaxed max-w-md mx-auto">
-                Whether you are ready to book a private nurse, need assistance with your dashboard, or simply have questions about clinical safety, our team is standing by to assist you 24/7.
-              </p>
-            </div>
           </div>
         </div>
       </section>
 
-      {/* Info & Form Section - Sleek & Compact */}
-      <section className="py-12 px-4 bg-white">
+      {/* ─── CONTACT INFO CARDS ────────────────── */}
+      <section className="py-10 px-4 bg-white border-b border-gray-100">
         <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-            
-            {/* Left Side: Consolidated Directory & Map Info */}
-            <div className="lg:col-span-5 space-y-6">
-              
-              {/* Directory Card */}
-              <div 
-                style={{ borderRadius: '1.25rem' }}
-                className="bg-slate-50 border border-purple-100/50 p-5 shadow-[0_4px_20px_-4px_rgba(168,85,247,0.03)]"
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            {contactInfos.map((info, idx) => (
+              <a
+                key={idx}
+                href={info.actionUrl}
+                className={`group bg-gradient-to-br ${info.color} border border-gray-100 rounded-2xl p-5 hover:border-purple-200 hover:-translate-y-1 transition-all duration-300 block`}
+                style={{ boxShadow: '0 2px 12px rgba(0,0,0,0.04)' }}
+                onClick={info.actionUrl === '#' ? (e) => e.preventDefault() : undefined}
               >
-                <div className="mb-4">
-                  <Badge variant="outline" className="mb-1.5 bg-white text-purple-700 border-purple-200 text-[9px] px-2 py-0.5">Info Directory</Badge>
-                  <h2 className="text-base font-semibold text-gray-900">How Can We Connect?</h2>
-                  <p className="text-[11px] text-gray-400 mt-0.5">Select the channel that is most convenient for you.</p>
+                <div className="w-9 h-9 bg-white rounded-xl flex items-center justify-center mb-3 shadow-sm group-hover:scale-110 transition-transform duration-300">
+                  {info.icon}
                 </div>
+                <h3 className="font-bold text-gray-900 text-sm mb-1">{info.title}</h3>
+                <p className="text-xs font-semibold text-purple-700 mb-0.5">{info.detail1}</p>
+                <p className="text-[11px] text-gray-400 leading-relaxed">{info.detail2}</p>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
 
-                <div className="space-y-3.5">
-                  {contactInfos.map((info, idx) => (
-                    <div key={idx} className="flex gap-3 group items-start border-b border-purple-50/50 pb-3 last:border-0 last:pb-0">
-                      <div className="w-8 h-8 rounded-lg bg-white border border-purple-100/60 flex items-center justify-center shrink-0 mt-0.5 shadow-inner transition-colors group-hover:bg-purple-50">
-                        {info.icon}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <h3 className="font-semibold text-gray-900 text-xs">{info.title}</h3>
-                        <p className="text-[11px] font-semibold text-purple-700 mt-0.5">{info.detail1}</p>
-                        <p className="text-[10px] text-gray-400 mt-0.5 leading-relaxed">{info.detail2}</p>
-                      </div>
+      {/* ─── FORM + INFO SECTION ────────────────── */}
+      <section className="py-16 px-4 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+
+            {/* Left: Additional info */}
+            <div className="lg:col-span-5 space-y-6">
+              <div>
+                <h2 className="text-2xl font-black text-gray-900 mb-3 tracking-tight font-heading">
+                  Get in Touch
+                </h2>
+                <p className="text-gray-500 text-sm leading-relaxed">
+                  Whether you're a patient looking for care or a nurse wanting to join our network, we're here to help you every step of the way.
+                </p>
+              </div>
+
+              {/* Trust points */}
+              <div className="space-y-3">
+                {[
+                  'We respond to every inquiry within 2 hours',
+                  'Our team is available 24/7 for urgent care',
+                  'All conversations are strictly confidential',
+                  'Direct line to our care coordinators',
+                ].map((point) => (
+                  <div key={point} className="flex items-start gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
+                    <span className="text-sm text-gray-600 font-medium">{point}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Active status badge */}
+              <div className="flex items-center gap-3 bg-emerald-50 border border-emerald-100 rounded-2xl p-4">
+                <div className="w-9 h-9 bg-white rounded-xl flex items-center justify-center shadow-sm shrink-0">
+                  <MapPin className="w-4 h-4 text-emerald-500" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-1.5 mb-0.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                    <span className="text-xs font-bold text-emerald-700">Nurses Active Near You</span>
+                  </div>
+                  <p className="text-[11px] text-emerald-600">Check real-time availability from your patient portal</p>
+                </div>
+              </div>
+
+              {/* Operating hours */}
+              <div className="bg-gray-50 border border-gray-100 rounded-2xl p-5">
+                <h4 className="text-sm font-bold text-gray-900 mb-3">Response Times</h4>
+                <div className="space-y-2">
+                  {[
+                    { label: 'Phone & Urgent Care', time: 'Under 15 min' },
+                    { label: 'Email Support', time: '1–2 hours' },
+                    { label: 'Nurse Matchmaking', time: 'Under 3 hours' },
+                  ].map(({ label, time }) => (
+                    <div key={label} className="flex items-center justify-between text-xs">
+                      <span className="text-gray-500 font-medium">{label}</span>
+                      <span className="text-purple-700 font-bold bg-purple-50 px-2 py-0.5 rounded-full">{time}</span>
                     </div>
                   ))}
                 </div>
               </div>
-
-              {/* Compact Map Card */}
-              <div 
-                style={{ borderRadius: '1.25rem' }}
-                className="p-4 bg-slate-50 border border-purple-100/50 shadow-[0_4px_15px_-4px_rgba(168,85,247,0.02)] overflow-hidden relative"
-              >
-                <div className="relative z-10 flex items-center gap-3.5">
-                  <div className="w-9 h-9 bg-purple-50 rounded-full flex items-center justify-center shrink-0">
-                    <MapPin className="w-4.5 h-4.5 text-purple-600 animate-bounce" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-xs text-gray-900">Global Coverage, Local Care</h4>
-                    <p className="text-[10px] text-gray-400 leading-relaxed max-w-xs mt-0.5">
-                      Check real-time nurse availability near you from your patient portal.
-                    </p>
-                    <Badge className="bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500/10 border-0 flex gap-1 items-center w-fit mt-1.5 px-2 py-0.5 text-[9px]">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping"></span>
-                      Nurses active near you now
-                    </Badge>
-                  </div>
-                </div>
-              </div>
             </div>
 
-            {/* Right Side: Contact Form Card - Trimmed Height */}
+            {/* Right: Contact Form */}
             <div className="lg:col-span-7">
-              <Card style={{ borderRadius: '1.25rem' }} className="shadow-lg border-purple-100/50 overflow-hidden h-fit">
-                <CardContent className="p-5 md:p-6">
-                  <div className="mb-4">
-                    <Badge variant="outline" className="mb-1.5 text-purple-700 border-purple-200 text-[9px] px-2 py-0.5">Inquiry Form</Badge>
-                    <h2 className="text-base font-semibold text-gray-900">Send Us a Direct Message</h2>
-                    <p className="text-[11px] text-gray-400 mt-0.5">We respond to every submission within 2 working hours.</p>
-                  </div>
+              <div className="bg-white border border-gray-100 rounded-2xl overflow-hidden" style={{ boxShadow: '0 8px 40px -8px rgba(147,51,234,0.1), 0 2px 12px rgba(0,0,0,0.04)' }}>
 
-                  <form onSubmit={handleSubmit} className="space-y-4.5">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div className="space-y-1.5">
-                        <label className="text-[11px] font-semibold text-gray-600 flex gap-0.5">
-                          Full Name <span className="text-destructive">*</span>
-                        </label>
-                        <Input 
-                          type="text" 
-                          name="name" 
-                          placeholder="Jane Doe" 
-                          value={formData.name}
-                          onChange={handleInputChange}
-                          required
-                          style={{ borderRadius: '0.5rem' }}
-                          className="h-9.5 text-xs border-purple-100"
-                        />
-                      </div>
-                      <div className="space-y-1.5">
-                        <label className="text-[11px] font-semibold text-gray-600 flex gap-0.5">
-                          Email Address <span className="text-destructive">*</span>
-                        </label>
-                        <Input 
-                          type="email" 
-                          name="email" 
-                          placeholder="jane@example.com" 
-                          value={formData.email}
-                          onChange={handleInputChange}
-                          required
-                          style={{ borderRadius: '0.5rem' }}
-                          className="h-9.5 text-xs border-purple-100"
-                        />
-                      </div>
-                    </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div className="space-y-1.5">
-                        <label className="text-[11px] font-semibold text-gray-600">
-                          Phone Number
-                        </label>
-                        <Input 
-                          type="tel" 
-                          name="phone" 
-                          placeholder="+1 (555) 019-2834" 
-                          value={formData.phone}
-                          onChange={handleInputChange}
-                          style={{ borderRadius: '0.5rem' }}
-                          className="h-9.5 text-xs border-purple-100"
-                        />
-                      </div>
-                      <div className="space-y-1.5">
-                        <label className="text-[11px] font-semibold text-gray-600">
-                          Subject Topic
-                        </label>
-                        <select 
-                          name="subject" 
-                          value={formData.subject}
-                          onChange={handleInputChange}
-                          style={{ borderRadius: '0.5rem' }}
-                          className="w-full h-9.5 rounded-lg border border-purple-100 bg-background px-3 py-1.5 text-xs outline-none transition-all focus:border-purple-300 focus:ring-2 focus:ring-purple-200"
-                        >
-                          <option value="General Inquiry">General Inquiry</option>
-                          <option value="Billing & Pricing">Billing & Pricing</option>
-                          <option value="Nurse Matching">Nurse Matching Assistance</option>
-                          <option value="Join Network">Join Nurse Network</option>
-                          <option value="Technical Feedback">Technical Feedback / Issue</option>
-                        </select>
-                      </div>
-                    </div>
-
+                <form onSubmit={handleSubmit} className="p-6 space-y-5">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-1.5">
-                      <label className="text-[11px] font-semibold text-gray-600 flex gap-0.5">
-                        Your Detailed Message <span className="text-destructive">*</span>
+                      <label className="text-xs font-bold text-gray-700 flex gap-0.5">
+                        Full Name <span className="text-red-500">*</span>
                       </label>
-                      <textarea 
-                        name="message" 
-                        rows="3.5"
-                        placeholder="Please write the details of your inquiry here..."
-                        value={formData.message}
+                      <Input
+                        type="text"
+                        name="name"
+                        placeholder="Jane Doe"
+                        value={formData.name}
                         onChange={handleInputChange}
                         required
-                        style={{ borderRadius: '0.5rem' }}
-                        className="w-full rounded-lg border border-purple-100 bg-transparent px-3 py-2 text-xs outline-none transition-all placeholder:text-gray-400 focus:border-purple-300 focus:ring-2 focus:ring-purple-200"
-                      ></textarea>
+                        className="h-10 text-sm border-gray-200 focus:border-purple-400 rounded-xl focus:ring-2 focus:ring-purple-100"
+                      />
                     </div>
+                    <div className="space-y-1.5">
+                      <label className="text-xs font-bold text-gray-700 flex gap-0.5">
+                        Email Address <span className="text-red-500">*</span>
+                      </label>
+                      <Input
+                        type="email"
+                        name="email"
+                        placeholder="jane@example.com"
+                        value={formData.email}
+                        onChange={handleInputChange}
+                        required
+                        className="h-10 text-sm border-gray-200 focus:border-purple-400 rounded-xl focus:ring-2 focus:ring-purple-100"
+                      />
+                    </div>
+                  </div>
 
-                    <Button 
-                      type="submit" 
-                      style={{ borderRadius: '0.5rem' }}
-                      className="w-full h-9.5 mt-2 bg-purple-600 hover:bg-purple-700 text-white flex items-center justify-center gap-2 font-bold text-xs shadow-md border-none transition-all duration-300"
-                      disabled={isSubmitting}
-                    >
-                      {isSubmitting ? (
-                        <>
-                          <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                          Sending your inquiry...
-                        </>
-                      ) : (
-                        <>
-                          <Send className="w-3.5 h-3.5" />
-                          Send Message
-                        </>
-                      )}
-                    </Button>
-                  </form>
-                </CardContent>
-              </Card>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="space-y-1.5">
+                      <label className="text-xs font-bold text-gray-700">Phone Number</label>
+                      <Input
+                        type="tel"
+                        name="phone"
+                        placeholder="+91 98765 43210"
+                        value={formData.phone}
+                        onChange={handleInputChange}
+                        className="h-10 text-sm border-gray-200 focus:border-purple-400 rounded-xl focus:ring-2 focus:ring-purple-100"
+                      />
+                    </div>
+                    <div className="space-y-1.5">
+                      <label className="text-xs font-bold text-gray-700">Subject Topic</label>
+                      <select
+                        name="subject"
+                        value={formData.subject}
+                        onChange={handleInputChange}
+                        className="w-full h-10 rounded-xl border border-gray-200 bg-background px-3 text-sm outline-none transition-all focus:border-purple-400 focus:ring-2 focus:ring-purple-100"
+                      >
+                        <option value="General Inquiry">General Inquiry</option>
+                        <option value="Billing & Pricing">Billing & Pricing</option>
+                        <option value="Nurse Matching">Nurse Matching Assistance</option>
+                        <option value="Join Network">Join Nurse Network</option>
+                        <option value="Technical Feedback">Technical Feedback / Issue</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-bold text-gray-700 flex gap-0.5">
+                      Your Message <span className="text-red-500">*</span>
+                    </label>
+                    <textarea
+                      name="message"
+                      rows="4"
+                      placeholder="Please write the details of your inquiry here..."
+                      value={formData.message}
+                      onChange={handleInputChange}
+                      required
+                      className="w-full rounded-xl border border-gray-200 bg-transparent px-3 py-2.5 text-sm outline-none transition-all placeholder:text-gray-400 focus:border-purple-400 focus:ring-2 focus:ring-purple-100 resize-none"
+                    />
+                  </div>
+
+                  <Button
+                    type="submit"
+                    className="w-full h-11 text-white font-bold text-sm rounded-xl border-none gap-2 transition-all duration-300"
+                    style={{ background: 'linear-gradient(135deg, #9333ea 0%, #7c3aed 100%)', boxShadow: '0 4px 16px rgba(147,51,234,0.35)' }}
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        Sending your inquiry...
+                      </>
+                    ) : (
+                      <>
+                        <Send className="w-4 h-4" />
+                        Send Message
+                      </>
+                    )}
+                  </Button>
+                </form>
+              </div>
             </div>
 
           </div>
         </div>
       </section>
 
-      {/* Frequently Asked Questions Accordion Section - Sleek & Solid */}
-      <section className="py-12 px-4 bg-slate-50 border-t border-purple-100/30">
+      {/* ─── FAQ SECTION ──────────────────────── */}
+      <section ref={faqRef} className="py-20 px-4 border-t border-gray-100" style={{ background: 'linear-gradient(180deg, #fafafa 0%, #f5f3ff 50%, #fafafa 100%)' }}>
         <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-10">
-            <span className="text-[10px] font-semibold text-purple-600 uppercase tracking-widest bg-purple-50 px-3 py-1 rounded-full inline-block mb-2">FAQ</span>
-            <h2 className="text-xl md:text-2.5xl font-bold text-gray-900 mb-2 tracking-tight">
-              Frequently Answered Questions
+          <div className={`text-center mb-12 transition-all duration-700 ${faqVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'}`}>
+            <span className="text-xs font-bold text-purple-600 uppercase tracking-widest bg-purple-50 border border-purple-100 px-4 py-1.5 rounded-full inline-block mb-4">
+              FAQ
+            </span>
+            <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-4 tracking-tight font-heading">
+              Frequently Asked Questions
             </h2>
-            <p className="text-gray-400 max-w-xs mx-auto text-xs">
+            <p className="text-gray-500 max-w-md mx-auto text-base leading-relaxed">
               Quick answers to the most common queries about booking, vetting, and matching.
             </p>
           </div>
@@ -360,28 +359,34 @@ const Contact = () => {
             {faqs.map((faq, idx) => {
               const isOpen = activeFaq === idx
               return (
-                <div 
-                  key={idx} 
-                  style={{ borderRadius: '0.75rem' }}
-                  className="bg-white border border-purple-100/50 shadow-[0_2px_10px_-4px_rgba(168,85,247,0.02)] overflow-hidden transition-all duration-300"
+                <div
+                  key={idx}
+                  className="bg-white border border-gray-100 rounded-2xl overflow-hidden transition-all duration-300 hover:border-purple-200"
+                  style={{
+                    boxShadow: isOpen ? '0 8px 24px -6px rgba(147,51,234,0.1)' : '0 2px 8px rgba(0,0,0,0.04)',
+                    transitionDelay: faqVisible ? `${idx * 80}ms` : '0ms',
+                  }}
                 >
-                  <button 
+                  <button
                     onClick={() => toggleFaq(idx)}
-                    className="w-full p-3.5 flex items-center justify-between text-left font-semibold text-gray-900 text-xs hover:bg-purple-50/30 transition-colors"
+                    className="w-full p-5 flex items-center justify-between text-left transition-colors hover:bg-purple-50/30"
                   >
-                    <span className="flex items-center gap-2 text-xs">
-                      <HelpCircle className="w-3.5 h-3.5 text-purple-600 shrink-0" />
+                    <span className="flex items-center gap-3 text-sm font-bold text-gray-900 pr-4">
+                      <div className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0" style={{ background: 'linear-gradient(135deg, #f5f0ff 0%, #ede9fe 100%)' }}>
+                        <HelpCircle className="w-3.5 h-3.5 text-purple-600" />
+                      </div>
                       {faq.q}
                     </span>
-                    {isOpen ? (
-                      <ChevronUp className="w-3.5 h-3.5 text-gray-400 shrink-0" />
-                    ) : (
-                      <ChevronDown className="w-3.5 h-3.5 text-gray-400 shrink-0" />
-                    )}
+                    <div className="shrink-0 w-7 h-7 rounded-lg border border-gray-100 flex items-center justify-center bg-gray-50">
+                      {isOpen
+                        ? <ChevronUp className="w-3.5 h-3.5 text-purple-600" />
+                        : <ChevronDown className="w-3.5 h-3.5 text-gray-400" />
+                      }
+                    </div>
                   </button>
                   {isOpen && (
-                    <div className="px-3.5 pb-3.5 pt-0.5 text-[11px] text-gray-500 leading-relaxed border-t border-purple-50/50 bg-slate-50/30 animate-in fade-in slide-in-from-top-1">
-                      {faq.a}
+                    <div className="px-5 pb-5 pt-0 text-sm text-gray-500 leading-relaxed border-t border-purple-50 bg-purple-50/20 animate-in fade-in slide-in-from-top-1">
+                      <div className="pt-4">{faq.a}</div>
                     </div>
                   )}
                 </div>
@@ -390,6 +395,7 @@ const Contact = () => {
           </div>
         </div>
       </section>
+
     </PublicLayout>
   )
 }

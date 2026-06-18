@@ -6,8 +6,22 @@ export const bookingApi = createApi({
         baseUrl: import.meta.env.VITE_BACKEND_URL || "/api",
         credentials: "include"
     }),
-    tagTypes: ["CustomerBookings", "CustomerPayments", "PublicServices", "CustomerProfile"],
+    tagTypes: ["CustomerBookings", "CustomerPayments", "PublicServices", "CustomerProfile", "Milestones", "Testimonials"],
     endpoints: (builder) => ({
+        // Feedback endpoints
+        submitFeedback: builder.mutation({
+            query: (feedbackData) => ({
+                url: "/feedback/submit",
+                method: "POST",
+                body: feedbackData
+            }),
+            invalidatesTags: ["Testimonials"]
+        }),
+        getPublicTestimonials: builder.query({
+            query: () => "/feedback/testimonials",
+            providesTags: ["Testimonials"]
+        }),
+
         // Catalog services
         getAllServices: builder.query({
             query: () => "/service/get-all-services",
@@ -16,6 +30,10 @@ export const bookingApi = createApi({
         getSingleService: builder.query({
             query: (serviceId) => `/service/get-single-service/${serviceId}`,
             providesTags: ["PublicServices"]
+        }),
+        getMilestones: builder.query({
+            query: () => "/milestones",
+            providesTags: ["Milestones"]
         }),
 
         // Customer Profile
@@ -101,6 +119,9 @@ export const {
     useCancelBookingMutation,
     useCreatePaymentOrderMutation,
     useVerifyPaymentMutation,
-    useGetMyPaymentsQuery
+    useGetMyPaymentsQuery,
+    useGetMilestonesQuery,
+    useSubmitFeedbackMutation,
+    useGetPublicTestimonialsQuery
 } = bookingApi
 

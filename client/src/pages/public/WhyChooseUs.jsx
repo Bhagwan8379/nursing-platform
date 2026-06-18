@@ -12,7 +12,7 @@ const WhyChooseUs = () => {
                     setIsVisible(true)
                 }
             },
-            { threshold: 0.15 } // Trigger when 15% of the section is visible
+            { threshold: 0.15 }
         )
 
         if (sectionRef.current) {
@@ -27,74 +27,84 @@ const WhyChooseUs = () => {
     }, [])
 
     const features = [
-        { 
-            icon: <Shield className="w-5.5 h-5.5 text-purple-600 group-hover:scale-110 transition-transform duration-300" />, 
-            title: 'Verified Nurses', 
-            desc: 'All nurses are verified with document checks and qualification validation.' 
+        {
+            icon: <Shield className="w-5 h-5 text-purple-600" />,
+            title: 'Verified Nurses',
+            desc: 'All nurses are verified with document checks and qualification validation.'
         },
-        { 
-            icon: <Clock className="w-5.5 h-5.5 text-purple-600 group-hover:scale-110 transition-transform duration-300" />, 
-            title: '24/7 Available', 
-            desc: 'Book nursing services any time of the day or night.' 
+        {
+            icon: <Clock className="w-5 h-5 text-purple-600" />,
+            title: '24/7 Available',
+            desc: 'Book nursing services any time of the day or night.'
         },
-        { 
-            icon: <Star className="w-5.5 h-5.5 text-purple-600 group-hover:scale-110 transition-transform duration-300" />, 
-            title: 'Rated & Reviewed', 
-            desc: 'Choose nurses based on real patient reviews and ratings.' 
+        {
+            icon: <Star className="w-5 h-5 text-purple-600" />,
+            title: 'Rated & Reviewed',
+            desc: 'Choose nurses based on real patient reviews and ratings.'
         },
-        { 
-            icon: <Phone className="w-5.5 h-5.5 text-purple-600 group-hover:scale-110 transition-transform duration-300" />, 
-            title: 'Real-time Updates', 
-            desc: 'Track your nurse in real-time and get notified at every step.' 
+        {
+            icon: <Phone className="w-5 h-5 text-purple-600" />,
+            title: 'Real-time Updates',
+            desc: 'Track your nurse in real-time and get notified at every step.'
         },
     ]
 
     return (
-        <section 
-            ref={sectionRef} 
-            className="py-20 px-4 relative overflow-hidden bg-slate-50"
+        <section
+            ref={sectionRef}
+            className="py-24 px-4 relative overflow-hidden"
+            style={{ background: 'linear-gradient(180deg, #fafafa 0%, #f5f3ff 50%, #fafafa 100%)' }}
         >
+            {/* Subtle decorative element */}
+            <div
+                className="absolute right-0 top-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full opacity-[0.04] pointer-events-none"
+                style={{ background: 'radial-gradient(ellipse, #9333ea 0%, transparent 70%)', filter: 'blur(80px)' }}
+            />
 
             <div className="max-w-7xl mx-auto relative z-10">
-                
+
                 {/* Header Section */}
-                <div 
-                    className={`text-center mb-16 transition-all duration-700 ease-out transform ${
+                <div
+                    className={`text-center mb-14 transition-all duration-700 ease-out transform ${
                         isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'
                     }`}
                 >
-                    <span className="text-xs font-semibold text-purple-600 uppercase tracking-widest bg-purple-50 px-3.5 py-1.5 rounded-full inline-block mb-3">
+                    <span className="text-xs font-bold text-purple-600 uppercase tracking-widest bg-purple-50 border border-purple-100 px-4 py-1.5 rounded-full inline-block mb-4">
                         Our Strengths
                     </span>
-                    <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 tracking-tight">
+                    <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-4 tracking-tight font-heading">
                         Why Choose CareNest?
                     </h2>
-                    <p className="text-gray-600 max-w-xl mx-auto text-base">
+                    <p className="text-gray-500 max-w-md mx-auto text-base leading-relaxed">
                         We ensure the highest quality of home nursing care
                     </p>
                 </div>
 
                 {/* Features Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="flex lg:grid lg:grid-cols-4 overflow-x-auto lg:overflow-visible gap-5 pb-6 lg:pb-0 snap-x snap-mandatory scrollbar-none">
                     {features.map((feature, index) => (
-                        <div 
+                        <div
                             key={feature.title}
-                            style={{ 
+                            style={{
                                 transitionDelay: isVisible ? `${index * 120}ms` : '0ms',
-                                borderRadius: '1.25rem'
+                                borderRadius: '1.125rem',
+                                boxShadow: '0 2px 12px rgba(0,0,0,0.04)',
                             }}
-                            className={`p-7 bg-white border border-purple-100/50 shadow-[0_4px_20px_-4px_rgba(168,85,247,0.05)] hover:shadow-[0_12px_30px_-6px_rgba(168,85,247,0.1)] hover:border-purple-200/80 transition-all duration-500 hover:-translate-y-1.5 group transform ${
-                                isVisible 
-                                    ? 'opacity-100 translate-y-0 duration-700 ease-out' 
+                            className={`w-[260px] sm:w-[320px] lg:w-auto flex-shrink-0 snap-start p-7 bg-white border border-gray-100 hover:border-purple-200 hover:shadow-[0_12px_32px_-8px_rgba(147,51,234,0.12)] transition-all duration-500 hover:-translate-y-1.5 group transform ${
+                                isVisible
+                                    ? 'opacity-100 translate-y-0 duration-700 ease-out'
                                     : 'opacity-0 translate-y-12'
                             }`}
                         >
                             {/* Icon container */}
-                            <div className="w-12 h-12 bg-purple-50 rounded-xl flex items-center justify-center mb-5 transition-all duration-300 group-hover:bg-purple-100/70 shadow-inner">
+                            <div
+                                className="w-11 h-11 rounded-xl flex items-center justify-center mb-5 transition-all duration-300 group-hover:scale-110"
+                                style={{ background: 'linear-gradient(135deg, #f5f0ff 0%, #ede9fe 100%)', boxShadow: '0 2px 8px rgba(147,51,234,0.08)' }}
+                            >
                                 {feature.icon}
                             </div>
-                            
-                            <h3 className="font-bold text-gray-900 mb-2.5 tracking-tight group-hover:text-purple-600 transition-colors">
+
+                            <h3 className="font-bold text-gray-900 mb-2 text-sm tracking-tight group-hover:text-purple-700 transition-colors font-heading">
                                 {feature.title}
                             </h3>
                             <p className="text-gray-500 text-sm leading-relaxed">

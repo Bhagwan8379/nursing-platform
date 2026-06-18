@@ -6,8 +6,28 @@ export const adminApi = createApi({
         baseUrl: import.meta.env.VITE_BACKEND_URL || "/api",
         credentials: "include"
     }),
-    tagTypes: ["Nurses", "Customers", "Bookings", "Services", "Payments"],
+    tagTypes: ["Nurses", "Customers", "Bookings", "Services", "Payments", "Milestones", "Feedbacks"],
     endpoints: (builder) => ({
+        // Feedback endpoints
+        getAllFeedbacks: builder.query({
+            query: () => "/feedback/admin/all",
+            providesTags: ["Feedbacks"]
+        }),
+        toggleFeedbackVisibility: builder.mutation({
+            query: (id) => ({
+                url: `/feedback/admin/toggle-show/${id}`,
+                method: "PUT"
+            }),
+            invalidatesTags: ["Feedbacks"]
+        }),
+        deleteFeedback: builder.mutation({
+            query: (id) => ({
+                url: `/feedback/admin/delete/${id}`,
+                method: "DELETE"
+            }),
+            invalidatesTags: ["Feedbacks"]
+        }),
+
         // Nurses
         getAllNurses: builder.query({
             query: () => "/admin/nurses",
@@ -124,6 +144,21 @@ export const adminApi = createApi({
                 method: "PUT"
             }),
             invalidatesTags: ["Bookings", "Payments"]
+        }),
+        createMilestone: builder.mutation({
+            query: (milestoneData) => ({
+                url: "/admin/milestones",
+                method: "POST",
+                body: milestoneData
+            }),
+            invalidatesTags: ["Milestones"]
+        }),
+        deleteMilestone: builder.mutation({
+            query: (id) => ({
+                url: `/admin/milestones/${id}`,
+                method: "DELETE"
+            }),
+            invalidatesTags: ["Milestones"]
         })
     })
 })
@@ -145,5 +180,10 @@ export const {
     useGetAvailableNursesQuery,
     useAssignNurseMutation,
     useConfirmCashPaymentMutation,
-    useRefundPaymentMutation
+    useRefundPaymentMutation,
+    useCreateMilestoneMutation,
+    useDeleteMilestoneMutation,
+    useGetAllFeedbacksQuery,
+    useToggleFeedbackVisibilityMutation,
+    useDeleteFeedbackMutation
 } = adminApi

@@ -112,7 +112,7 @@ exports.getMyBookings = asyncHandler(async (req, res) => {
     try {
         const result = await Booking.find({ customerId: req.user })
             .populate('serviceId', 'name price')
-            .populate('assignedNurseId', 'name email mobile')
+            .populate('assignedNurseId', 'name mobile')
             .sort({ createdAt: -1 })
 
         res.json({ message: "My Bookings Fetched Successfully", result })
@@ -126,7 +126,7 @@ exports.getMyBookings = asyncHandler(async (req, res) => {
 exports.getNurseBookings = asyncHandler(async (req, res) => {
     try {
         const result = await Booking.find({ assignedNurseId: req.user })
-            .populate('customerId', 'name email mobile')
+            .populate('customerId', 'name mobile')
             .populate('serviceId', 'name price')
             .sort({ createdAt: -1 })
 
@@ -143,9 +143,9 @@ exports.getSingleBooking = asyncHandler(async (req, res) => {
         const { bookingId } = req.params
 
         const result = await Booking.findById(bookingId)
-            .populate('customerId', 'name email mobile')
+            .populate('customerId', 'name mobile')
             .populate('serviceId', 'name price description')
-            .populate('assignedNurseId', 'name email mobile')
+            .populate('assignedNurseId', 'name mobile')
 
         if (!result) {
             return res.status(404).json({ message: "Booking Not Found" })

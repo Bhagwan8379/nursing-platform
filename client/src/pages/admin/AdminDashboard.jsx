@@ -6,7 +6,7 @@ import {
     Heart, ShieldAlert, Award, Stethoscope, Users, Briefcase, DollarSign,
     CheckCircle2, XCircle, Clock, MapPin, Plus, Edit3, Trash2, ArrowRight,
     RefreshCw, LogOut, FileText, Check, ShieldCheck, Search, Info, ExternalLink,
-    Calendar, ChevronLeft, ChevronRight
+    Calendar, ChevronLeft, ChevronRight, Star, Eye, EyeOff
 } from 'lucide-react'
 import { logoutAdmin } from '@/redux/slice/authSlice'
 import { useLogoutAdminMutation } from '@/redux/apis/authApi'
@@ -27,9 +27,14 @@ import {
     useGetAvailableNursesQuery,
     useAssignNurseMutation,
     useConfirmCashPaymentMutation,
-    useRefundPaymentMutation
+    useRefundPaymentMutation,
+    useCreateMilestoneMutation,
+    useDeleteMilestoneMutation,
+    useGetAllFeedbacksQuery,
+    useToggleFeedbackVisibilityMutation,
+    useDeleteFeedbackMutation
 } from '@/redux/apis/adminApi'
-import { useGetAllServicesQuery } from '@/redux/apis/bookingApi'
+import { useGetAllServicesQuery, useGetMilestonesQuery } from '@/redux/apis/bookingApi'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -53,7 +58,9 @@ const AdminDashboard = () => {
     const [activeTab, setActiveTab] = useState('overview')
 
     // RTK Queries & Mutations
-    const { data: nursesData, isLoading: nursesLoading, refetch: refetchNurses } = useGetAllNursesQuery()
+    const { data: nursesData, isLoading: nursesLoading, refetch: refetchNurses } = useGetAllNursesQuery(undefined, {
+        pollingInterval: 15000
+    })
     const { data: pendingNursesData, isLoading: pendingNursesLoading, refetch: refetchPendingNurses } = useGetPendingNursesQuery()
     const { data: customersData, isLoading: customersLoading, refetch: refetchCustomers } = useGetAllCustomersQuery()
     const { data: bookingsData, isLoading: bookingsLoading, refetch: refetchBookings } = useGetAllBookingsQuery()
@@ -87,6 +94,66 @@ const AdminDashboard = () => {
         durationHours: '2',
         requiredQualification: 'GNM'
     })
+
+    // Milestones state & mutations
+    const { data: milestonesData, isLoading: milestonesLoading, refetch: refetchMilestones } = useGetMilestonesQuery()
+    const [createMilestone, { isLoading: creatingMilestone }] = useCreateMilestoneMutation()
+    const [deleteMilestone, { isLoading: deletingMilestone }] = useDeleteMilestoneMutation()
+
+    // Feedbacks state & mutations
+    const { data: feedbacksData, isLoading: feedbacksLoading, refetch: refetchFeedbacks } = useGetAllFeedbacksQuery()
+    const [toggleFeedbackVisibility] = useToggleFeedbackVisibilityMutation()
+    const [deleteFeedback] = useDeleteFeedbackMutation()
+
+    const handleFeedbackToggleShow = async (id) => {
+        try {
+            const res = await toggleFeedbackVisibility(id).unwrap()
+            toast.success(res.message || 'Feedback visibility updated')
+        } catch (error) {
+            toast.error(error?.data?.message || 'Failed to toggle visibility')
+        }
+    }
+
+    const handleFeedbackDelete = async (id) => {
+        if (!window.confirm('Are you sure you want to permanently delete this feedback?')) return
+        try {
+            await deleteFeedback(id).unwrap()
+            toast.success('Feedback deleted successfully')
+        } catch (error) {
+            toast.error(error?.data?.message || 'Failed to delete feedback')
+        }
+    }
+
+    const [newMilestone, setNewMilestone] = useState({
+        year: '',
+        title: '',
+        desc: ''
+    })
+
+    const handleMilestoneSubmit = async (e) => {
+        e.preventDefault()
+        if (!newMilestone.year || !newMilestone.title || !newMilestone.desc) {
+            toast.error('All fields are required')
+            return
+        }
+        try {
+            await createMilestone(newMilestone).unwrap()
+            toast.success('New milestone added successfully!')
+            setNewMilestone({ year: '', title: '', desc: '' })
+        } catch (error) {
+            toast.error(error?.data?.message || 'Failed to add milestone')
+        }
+    }
+
+    const handleMilestoneDelete = async (id) => {
+        if (!window.confirm('Are you sure you want to delete this milestone?')) return
+        try {
+            await deleteMilestone(id).unwrap()
+            toast.success('Milestone deleted successfully')
+        } catch (error) {
+            toast.error(error?.data?.message || 'Failed to delete milestone')
+        }
+    }
 
     // KYC rejection reason states
     const [rejectionNurseId, setRejectionNurseId] = useState(null)
@@ -415,6 +482,24 @@ const AdminDashboard = () => {
                         >
                             <Calendar className="w-4 h-4 shrink-0" />
                             {isSidebarOpen && <span>Visits Dispatcher</span>}
+                        </button>
+
+                        <button
+                            onClick={() => setActiveTab('milestones')}
+                            className={`px-4 py-2.5 rounded-xl text-sm font-semibold flex items-center transition-colors ${isSidebarOpen ? 'gap-3' : 'justify-center'} ${activeTab === 'milestones' ? 'bg-primary text-white font-bold' : 'hover:bg-slate-800 hover:text-white'}`}
+                            title="Company Journey"
+                        >
+                            <Award className="w-4 h-4 shrink-0" />
+                            {isSidebarOpen && <span>Company Journey</span>}
+                        </button>
+
+                        <button
+                            onClick={() => setActiveTab('feedbacks')}
+                            className={`px-4 py-2.5 rounded-xl text-sm font-semibold flex items-center transition-colors ${isSidebarOpen ? 'gap-3' : 'justify-center'} ${activeTab === 'feedbacks' ? 'bg-primary text-white font-bold' : 'hover:bg-slate-800 hover:text-white'}`}
+                            title="Patient Feedbacks"
+                        >
+                            <Star className="w-4 h-4 shrink-0" />
+                            {isSidebarOpen && <span>Patient Feedbacks</span>}
                         </button>
                     </nav>
                 </div>
@@ -1464,6 +1549,231 @@ const AdminDashboard = () => {
                                     </div>
                                 </CardFooter>
                             )}
+                        </Card>
+                    </div>
+                )}
+
+                {activeTab === 'milestones' && (
+                    <div className="space-y-8">
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                            <div>
+                                <h1 className="text-3xl font-extrabold text-slate-800 tracking-tight">Company Journey</h1>
+                                <p className="text-sm text-slate-500 mt-1">Manage the historical growth milestones shown on the About Us page.</p>
+                            </div>
+                            <Button size="sm" onClick={refetchMilestones} className="bg-primary hover:bg-primary/95 text-white">
+                                <RefreshCw className="w-4 h-4 mr-2" /> Refresh Journey
+                            </Button>
+                        </div>
+
+                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+                            {/* Milestone Creator Form */}
+                            <Card className="bg-white border-0 shadow-xs lg:col-span-1">
+                                <CardHeader className="border-b border-slate-100">
+                                    <CardTitle className="text-lg font-bold text-slate-800">Add Milestone</CardTitle>
+                                    <CardDescription>Setup new year milestones on the CareNest timeline.</CardDescription>
+                                </CardHeader>
+                                <CardContent className="p-6">
+                                    <form onSubmit={handleMilestoneSubmit} className="space-y-4">
+                                        <div className="space-y-1">
+                                            <Label>Milestone Year</Label>
+                                            <Input
+                                                required
+                                                placeholder="e.g. 2027"
+                                                value={newMilestone.year}
+                                                onChange={(e) => setNewMilestone({ ...newMilestone, year: e.target.value })}
+                                            />
+                                        </div>
+                                        <div className="space-y-1">
+                                            <Label>Milestone Title</Label>
+                                            <Input
+                                                required
+                                                placeholder="e.g. Expanded to Pune"
+                                                value={newMilestone.title}
+                                                onChange={(e) => setNewMilestone({ ...newMilestone, title: e.target.value })}
+                                            />
+                                        </div>
+                                        <div className="space-y-1">
+                                            <Label>Description</Label>
+                                            <textarea
+                                                required
+                                                className="w-full min-h-[90px] p-3 rounded-md border border-input text-xs focus-visible:outline-hidden placeholder-slate-400"
+                                                placeholder="Details of what was achieved..."
+                                                value={newMilestone.desc}
+                                                onChange={(e) => setNewMilestone({ ...newMilestone, desc: e.target.value })}
+                                            />
+                                        </div>
+                                        <Button type="submit" disabled={creatingMilestone} className="w-full bg-primary hover:bg-primary/95 text-white font-bold mt-2">
+                                            {creatingMilestone ? 'Adding Milestone...' : 'Add Milestone'}
+                                        </Button>
+                                    </form>
+                                </CardContent>
+                            </Card>
+
+                            {/* Milestone List */}
+                            <Card className="bg-white border-0 shadow-xs lg:col-span-2 overflow-hidden">
+                                <CardContent className="p-0">
+                                    {milestonesLoading ? (
+                                        <div className="p-12 text-center text-slate-400">Loading timeline...</div>
+                                    ) : !milestonesData?.result || milestonesData.result.length === 0 ? (
+                                        <div className="p-12 text-center text-slate-400">No milestones yet. Create one!</div>
+                                    ) : (
+                                        <div className="overflow-x-auto">
+                                            <table className="w-full text-left border-collapse">
+                                                <thead>
+                                                    <tr className="bg-slate-50 text-slate-600 text-xs font-bold uppercase border-b border-slate-100">
+                                                        <th className="p-4">Year</th>
+                                                        <th className="p-4">Milestone</th>
+                                                        <th className="p-4">Description</th>
+                                                        <th className="p-4 text-right">Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody className="divide-y divide-slate-100 text-sm">
+                                                    {milestonesData.result.map((m) => (
+                                                        <tr key={m._id} className="hover:bg-slate-50/50">
+                                                            <td className="p-4 font-bold text-slate-900 font-heading">{m.year}</td>
+                                                            <td className="p-4 font-bold text-slate-800">{m.title}</td>
+                                                            <td className="p-4 text-slate-500 max-w-[280px] truncate" title={m.desc}>{m.desc}</td>
+                                                            <td className="p-4 text-right">
+                                                                <Button
+                                                                    size="sm"
+                                                                    variant="ghost"
+                                                                    disabled={deletingMilestone}
+                                                                    onClick={() => handleMilestoneDelete(m._id)}
+                                                                    className="text-red-600 hover:bg-red-50 text-xs font-semibold"
+                                                                >
+                                                                    Delete
+                                                                </Button>
+                                                            </td>
+                                                        </tr>
+                                                    ))}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    )}
+                                </CardContent>
+                            </Card>
+                        </div>
+                    </div>
+                )}
+
+                {activeTab === 'feedbacks' && (
+                    <div className="space-y-8">
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                            <div>
+                                <h1 className="text-3xl font-extrabold text-slate-800 tracking-tight flex items-center gap-2">
+                                    <Star className="w-8 h-8 text-amber-500 fill-amber-500/20" />
+                                    Patient Feedbacks & Reviews
+                                </h1>
+                                <p className="text-sm text-slate-500 mt-1">
+                                    Manage platform reviews, ratings, and toggle which testimonials appear on the public landing page marquee.
+                                </p>
+                            </div>
+                            <Button size="sm" onClick={refetchFeedbacks} className="bg-primary hover:bg-primary/95 text-white">
+                                <RefreshCw className="w-4 h-4 mr-2" /> Refresh Feedbacks
+                            </Button>
+                        </div>
+
+                        <Card className="bg-white border-0 shadow-xs overflow-hidden">
+                            <CardContent className="p-0">
+                                {feedbacksLoading ? (
+                                    <div className="p-12 text-center text-slate-400">Loading feedbacks...</div>
+                                ) : !feedbacksData?.result || feedbacksData.result.length === 0 ? (
+                                    <div className="p-12 text-center text-slate-400">No patient feedbacks received yet.</div>
+                                ) : (
+                                    <div className="overflow-x-auto">
+                                        <table className="w-full text-left border-collapse">
+                                            <thead>
+                                                <tr className="bg-slate-50 text-slate-600 text-xs font-bold uppercase border-b border-slate-100">
+                                                    <th className="p-4">Patient Info</th>
+                                                    <th className="p-4">Rating</th>
+                                                    <th className="p-4">Review Comment</th>
+                                                    <th className="p-4">Date Submitted</th>
+                                                    <th className="p-4">Landing Page Status</th>
+                                                    <th className="p-4 text-right">Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody className="divide-y divide-slate-100 text-sm">
+                                                {feedbacksData.result.map((feedback) => (
+                                                    <tr key={feedback._id} className="hover:bg-slate-50/50">
+                                                        <td className="p-4">
+                                                            <p className="font-bold text-slate-800">{feedback.name}</p>
+                                                            <p className="text-xs text-slate-500">{feedback.email}</p>
+                                                        </td>
+                                                        <td className="p-4">
+                                                            <div className="flex gap-0.5">
+                                                                {[1, 2, 3, 4, 5].map((starVal) => (
+                                                                    <Star
+                                                                        key={starVal}
+                                                                        className={`w-4 h-4 ${
+                                                                            starVal <= feedback.rating
+                                                                                ? 'fill-amber-400 text-amber-400'
+                                                                                : 'fill-slate-100 text-slate-200'
+                                                                        }`}
+                                                                    />
+                                                                ))}
+                                                            </div>
+                                                        </td>
+                                                        <td className="p-4 max-w-sm">
+                                                            <p className="text-slate-700 whitespace-pre-wrap break-words">{feedback.comment}</p>
+                                                        </td>
+                                                        <td className="p-4 text-slate-500">
+                                                            {new Date(feedback.createdAt).toLocaleDateString('en-IN', {
+                                                                day: '2-digit',
+                                                                month: 'short',
+                                                                year: 'numeric'
+                                                            })}
+                                                        </td>
+                                                        <td className="p-4">
+                                                            <span className={`text-[10px] font-extrabold px-2.5 py-1 rounded-full border tracking-wide uppercase ${
+                                                                feedback.showInTestimonials
+                                                                    ? 'bg-green-50 text-green-700 border-green-200'
+                                                                    : 'bg-slate-50 text-slate-500 border-slate-200'
+                                                            }`}>
+                                                                {feedback.showInTestimonials ? 'Visible (Approved)' : 'Hidden'}
+                                                            </span>
+                                                        </td>
+                                                        <td className="p-4 text-right">
+                                                            <div className="flex justify-end gap-2">
+                                                                <Button
+                                                                    size="sm"
+                                                                    variant="outline"
+                                                                    onClick={() => handleFeedbackToggleShow(feedback._id)}
+                                                                    className={`text-xs font-semibold flex items-center gap-1 ${
+                                                                        feedback.showInTestimonials
+                                                                            ? 'border-slate-200 text-slate-600 hover:bg-slate-50'
+                                                                            : 'border-primary/20 text-primary hover:bg-purple-50/50'
+                                                                    }`}
+                                                                >
+                                                                    {feedback.showInTestimonials ? (
+                                                                        <>
+                                                                            <EyeOff className="w-3.5 h-3.5" />
+                                                                            Hide
+                                                                        </>
+                                                                    ) : (
+                                                                        <>
+                                                                            <Eye className="w-3.5 h-3.5" />
+                                                                            Show on Home
+                                                                        </>
+                                                                    )}
+                                                                </Button>
+                                                                <Button
+                                                                    size="sm"
+                                                                    variant="ghost"
+                                                                    onClick={() => handleFeedbackDelete(feedback._id)}
+                                                                    className="text-rose-600 hover:bg-rose-50 hover:text-rose-700 text-xs font-semibold p-2"
+                                                                    title="Delete feedback"
+                                                                >
+                                                                    <Trash2 className="w-4 h-4" />
+                                                                </Button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                )}
+                            </CardContent>
                         </Card>
                     </div>
                 )}

@@ -67,71 +67,72 @@ const Service = () => {
                 </div>
 
                 {apiLoading ? (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div className="flex md:grid md:grid-cols-3 overflow-x-auto md:overflow-visible gap-6 pb-6 md:pb-0 snap-x snap-mandatory scrollbar-none">
                         {[1, 2, 3].map(i => (
-                            <div key={i} className="h-72 bg-slate-100 animate-pulse rounded-2xl border border-border/40"></div>
+                            <div key={i} className="w-[290px] sm:w-[350px] md:w-auto flex-shrink-0 snap-start h-72 bg-slate-100 animate-pulse rounded-2xl border border-border/40"></div>
                         ))}
                     </div>
                 ) : (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div className="flex md:grid md:grid-cols-3 overflow-x-auto md:overflow-visible gap-6 pb-6 md:pb-0 snap-x snap-mandatory scrollbar-none">
                         {displayServices.map((service) => (
-                            <Card
-                                key={service._id}
-                                className="group cursor-pointer hover:shadow-xl hover:border-primary/40 hover:-translate-y-1 transition-all duration-300 border border-border/60 bg-card/60 backdrop-blur-xs flex flex-col h-full overflow-hidden"
-                                onClick={() => setSelectedService(service)}
-                            >
-                                <CardContent className="p-6 flex flex-col h-full flex-1">
-                                    {/* Header: Icon & Category */}
-                                    <div className="flex justify-between items-center mb-4">
-                                        <div className="w-14 h-14 rounded-2xl bg-linear-to-br from-primary/10 to-primary/5 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                                            <Stethoscope className="w-8 h-8 text-primary" />
-                                        </div>
-                                        <Badge variant="secondary" className="text-xs font-semibold bg-primary/10 text-primary hover:bg-primary/20 border-0">
-                                            {service.category}
-                                        </Badge>
-                                    </div>
-
-                                    {/* Content */}
-                                    <h3 className="font-extrabold text-xl text-slate-800 mb-2 group-hover:text-primary transition-colors min-h-[28px] line-clamp-2">
-                                        {service.name}
-                                    </h3>
-                                    <p className="text-sm text-muted-foreground mb-6 line-clamp-3 leading-relaxed flex-1">
-                                        {service.description}
-                                    </p>
-
-                                    {/* Highlights */}
-                                    <div className="bg-slate-50/80 p-3 rounded-xl border border-slate-100 text-xs text-slate-600 mb-6 space-y-1.5 mt-auto">
-                                        <p className="flex items-center gap-1.5 font-semibold text-slate-800">
-                                            <Award className="w-3.5 h-3.5 text-primary shrink-0" />
-                                            Requires: {service.requiredQualification}
-                                        </p>
-                                        <p className="flex items-center gap-1.5 text-emerald-600 font-semibold">
-                                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
-                                            Completed until procedure is finished
-                                        </p>
-                                    </div>
-
-                                    {/* Footer: Price & More Button */}
-                                    <div className="flex items-center justify-between pt-4 border-t border-border/50">
-                                        <div>
-                                            <p className="text-[10px] text-muted-foreground uppercase tracking-wider font-bold">Standard Fee</p>
-                                            <div className="flex items-center gap-0.5 text-primary">
-                                                <IndianRupee className="w-4 h-4 shrink-0" />
-                                                <span className="text-2xl font-black">{service.price}</span>
-                                                <span className="text-xs text-muted-foreground">/visit</span>
+                            <div key={service._id} className="w-[290px] sm:w-[350px] md:w-auto flex-shrink-0 snap-start h-full">
+                                <Card
+                                    className="group cursor-pointer hover:shadow-xl hover:border-primary/40 hover:-translate-y-1 transition-all duration-300 border border-border/60 bg-card/60 backdrop-blur-xs flex flex-col h-full overflow-hidden"
+                                    onClick={() => setSelectedService(service)}
+                                >
+                                    <CardContent className="p-6 flex flex-col h-full flex-1">
+                                        {/* Header: Icon & Category */}
+                                        <div className="flex justify-between items-center mb-4">
+                                            <div className="w-14 h-14 rounded-2xl bg-linear-to-br from-primary/10 to-primary/5 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                                                <Stethoscope className="w-8 h-8 text-primary" />
                                             </div>
+                                            <Badge variant="secondary" className="text-xs font-semibold bg-primary/10 text-primary hover:bg-primary/20 border-0">
+                                                {service.category}
+                                            </Badge>
                                         </div>
-                                        <Button
-                                            size="sm"
-                                            variant="outline"
-                                            className="group-hover:bg-primary group-hover:text-white border-primary/30 group-hover:border-primary transition-all duration-300 font-bold flex gap-1 items-center text-xs"
-                                        >
-                                            View Details
-                                            <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-                                        </Button>
-                                    </div>
-                                </CardContent>
-                            </Card>
+
+                                        {/* Content */}
+                                        <h3 className="font-extrabold text-xl text-slate-800 mb-2 group-hover:text-primary transition-colors min-h-[28px] line-clamp-2">
+                                            {service.name}
+                                        </h3>
+                                        <p className="text-sm text-muted-foreground mb-6 line-clamp-3 leading-relaxed flex-1">
+                                            {service.description}
+                                        </p>
+
+                                        {/* Highlights */}
+                                        <div className="bg-slate-50/80 p-3 rounded-xl border border-slate-100 text-xs text-slate-600 mb-6 space-y-1.5 mt-auto">
+                                            <p className="flex items-center gap-1.5 font-semibold text-slate-800">
+                                                <Award className="w-3.5 h-3.5 text-primary shrink-0" />
+                                                Requires: {service.requiredQualification}
+                                            </p>
+                                            <p className="flex items-center gap-1.5 text-emerald-600 font-semibold">
+                                                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
+                                                Completed until procedure is finished
+                                            </p>
+                                        </div>
+
+                                        {/* Footer: Price & More Button */}
+                                        <div className="flex items-center justify-between pt-4 border-t border-border/50">
+                                            <div>
+                                                <p className="text-[10px] text-muted-foreground uppercase tracking-wider font-bold">Standard Fee</p>
+                                                <div className="flex items-center gap-0.5 text-primary">
+                                                    <IndianRupee className="w-4 h-4 shrink-0" />
+                                                    <span className="text-2xl font-black">{service.price}</span>
+                                                    <span className="text-xs text-muted-foreground">/visit</span>
+                                                </div>
+                                            </div>
+                                            <Button
+                                                size="sm"
+                                                variant="outline"
+                                                className="group-hover:bg-primary group-hover:text-white border-primary/30 group-hover:border-primary transition-all duration-300 font-bold flex gap-1 items-center text-xs"
+                                            >
+                                                View Details
+                                                <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                                            </Button>
+                                        </div>
+                                    </CardContent>
+                                </Card>
+                            </div>
                         ))}
                     </div>
                 )}

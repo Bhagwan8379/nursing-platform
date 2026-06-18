@@ -52,36 +52,60 @@ const Navbar = () => {
         <nav
             className="fixed top-0 left-0 right-0 z-50 transition-all duration-500"
             style={{
-                background: showSolidNavbar ? 'white' : 'transparent',
-                borderBottom: showSolidNavbar ? '1px solid rgba(229, 231, 235, 0.5)' : 'none',
-                boxShadow: showSolidNavbar ? '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03)' : 'none',
+                background: showSolidNavbar
+                    ? 'rgba(255, 255, 255, 0.97)'
+                    : 'transparent',
+                borderBottom: showSolidNavbar ? '1px solid rgba(139, 92, 246, 0.1)' : 'none',
+                boxShadow: showSolidNavbar
+                    ? '0 1px 3px 0 rgba(0, 0, 0, 0.04), 0 4px 16px -4px rgba(109, 40, 217, 0.08)'
+                    : 'none',
+                backdropFilter: showSolidNavbar ? 'blur(16px)' : 'none',
             }}
         >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-16">
 
                     {/* Logo */}
-                    <Link to="/" className="flex items-center gap-2 group">
-                        <div className="bg-linear-to-br from-primary to-primary/80 p-1.5 rounded-lg shadow-md group-hover:shadow-lg transition-all duration-300">
-                            <Heart className="w-5 h-5 text-white fill-white/20" />
+                    <Link to="/" className="flex items-center gap-2.5 group">
+                        <div
+                            className="p-1.5 rounded-lg transition-all duration-300 group-hover:scale-105"
+                            style={{ background: 'linear-gradient(135deg, #9333ea 0%, #7c3aed 100%)', boxShadow: '0 2px 8px rgba(147, 51, 234, 0.35)' }}
+                        >
+                            <Heart className="w-4 h-4 text-white fill-white/30" />
                         </div>
-                        <span className={`font-bold text-xl tracking-wide transition-colors duration-500 ${showSolidNavbar ? 'text-gray-900' : 'text-white'}`}>
+                        <span className={`font-bold text-[17px] tracking-tight transition-colors duration-500 font-heading ${showSolidNavbar ? 'text-gray-900' : 'text-white'}`}>
                             CareNest
                         </span>
                     </Link>
 
                     {/* Desktop Nav Links */}
-                    <div className="hidden md:flex items-center gap-1">
+                    <div className="hidden md:flex items-center gap-0.5">
                         {navLinks.map((link) => (
                             <Link
                                 key={link.name}
                                 to={link.path}
-                                className={`px-3 py-2 text-sm font-medium rounded-lg transition-all duration-300 ${isActive(link.path)
-                                    ? showSolidNavbar ? 'text-purple-700 font-semibold' : 'text-white font-semibold'
-                                    : showSolidNavbar ? 'text-gray-600 hover:text-purple-700' : 'text-white/70 hover:text-white'
-                                    }`}
+                                className={`relative px-4 py-2 text-sm font-medium rounded-lg transition-all duration-300 ${
+                                    isActive(link.path)
+                                        ? showSolidNavbar
+                                            ? 'text-purple-700'
+                                            : 'text-white'
+                                        : showSolidNavbar
+                                            ? 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                                            : 'text-white/75 hover:text-white hover:bg-white/10'
+                                }`}
                             >
                                 {link.name}
+                                {isActive(link.path) && (
+                                    <span
+                                        className="absolute bottom-0.5 left-1/2 -translate-x-1/2 h-0.5 rounded-full transition-all duration-300"
+                                        style={{
+                                            width: '20px',
+                                            background: showSolidNavbar
+                                                ? 'linear-gradient(90deg, #9333ea, #7c3aed)'
+                                                : 'white',
+                                        }}
+                                    />
+                                )}
                             </Link>
                         ))}
                     </div>
@@ -94,40 +118,41 @@ const Navbar = () => {
                                 <DropdownMenu>
                                     <DropdownMenuTrigger asChild>
                                         <Button
-                                            variant="outline"
+                                            variant="ghost"
                                             size="sm"
-                                            className={`transition-all duration-300 ${showSolidNavbar
-                                                ? 'border-gray-300 text-gray-700 bg-white hover:bg-gray-50 hover:border-gray-400'
-                                                : 'border-white/30 text-white bg-white/10 hover:bg-white/20 hover:border-white/50'
-                                                }`}
+                                            className={`gap-1.5 font-medium transition-all duration-300 ${
+                                                showSolidNavbar
+                                                    ? 'text-gray-700 hover:text-gray-900 hover:bg-gray-100'
+                                                    : 'text-white/80 hover:text-white hover:bg-white/10'
+                                            }`}
                                         >
-                                            <LogIn className="w-4 h-4 mr-1" />
+                                            <LogIn className="w-3.5 h-3.5" />
                                             Login
-                                            <ChevronDown className="w-3 h-3 ml-1" />
+                                            <ChevronDown className="w-3 h-3 opacity-60" />
                                         </Button>
                                     </DropdownMenuTrigger>
-                                    <DropdownMenuContent align="end" className="w-56">
+                                    <DropdownMenuContent align="end" className="w-52 rounded-xl shadow-xl border border-gray-100/80 p-1">
                                         <DropdownMenuItem
                                             onClick={() => navigate('/customer/login')}
-                                            className="cursor-pointer hover:bg-primary/10 hover:text-primary"
+                                            className="cursor-pointer rounded-lg px-3 py-2.5 hover:bg-purple-50 hover:text-purple-700 gap-2.5"
                                         >
-                                            <Users className="w-4 h-4 mr-2" />
-                                            Login as Patient
+                                            <Users className="w-4 h-4 shrink-0" />
+                                            <span className="text-sm font-medium">Login as Patient</span>
                                         </DropdownMenuItem>
                                         <DropdownMenuItem
                                             onClick={() => navigate('/nurse/login')}
-                                            className="cursor-pointer hover:bg-primary/10 hover:text-primary"
+                                            className="cursor-pointer rounded-lg px-3 py-2.5 hover:bg-purple-50 hover:text-purple-700 gap-2.5"
                                         >
-                                            <Stethoscope className="w-4 h-4 mr-2" />
-                                            Login as Nurse
+                                            <Stethoscope className="w-4 h-4 shrink-0" />
+                                            <span className="text-sm font-medium">Login as Nurse</span>
                                         </DropdownMenuItem>
-                                        <DropdownMenuSeparator />
+                                        <DropdownMenuSeparator className="my-1" />
                                         <DropdownMenuItem
                                             onClick={() => navigate('/admin/login')}
-                                            className="cursor-pointer hover:bg-primary/10 hover:text-primary"
+                                            className="cursor-pointer rounded-lg px-3 py-2.5 hover:bg-slate-50 hover:text-slate-700 gap-2.5"
                                         >
-                                            <Shield className="w-4 h-4 mr-2" />
-                                            Admin Login
+                                            <Shield className="w-4 h-4 shrink-0" />
+                                            <span className="text-sm font-medium">Admin Login</span>
                                         </DropdownMenuItem>
                                     </DropdownMenuContent>
                                 </DropdownMenu>
@@ -137,27 +162,28 @@ const Navbar = () => {
                                     <DropdownMenuTrigger asChild>
                                         <Button
                                             size="sm"
-                                            className="text-white font-semibold shadow-md hover:shadow-lg transition-all duration-300 bg-purple-600 hover:bg-purple-700 border-none"
+                                            className="gap-1.5 text-white font-semibold rounded-lg transition-all duration-300 border-none"
+                                            style={{ background: 'linear-gradient(135deg, #9333ea 0%, #7c3aed 100%)', boxShadow: '0 2px 8px rgba(147, 51, 234, 0.3)' }}
                                         >
-                                            <UserPlus className="w-4 h-4 mr-1" />
+                                            <UserPlus className="w-3.5 h-3.5" />
                                             Register
-                                            <ChevronDown className="w-3 h-3 ml-1" />
+                                            <ChevronDown className="w-3 h-3 opacity-80" />
                                         </Button>
                                     </DropdownMenuTrigger>
-                                    <DropdownMenuContent align="end" className="w-56">
+                                    <DropdownMenuContent align="end" className="w-52 rounded-xl shadow-xl border border-gray-100/80 p-1">
                                         <DropdownMenuItem
                                             onClick={() => navigate('/customer/register')}
-                                            className="cursor-pointer hover:bg-primary/10 hover:text-primary"
+                                            className="cursor-pointer rounded-lg px-3 py-2.5 hover:bg-purple-50 hover:text-purple-700 gap-2.5"
                                         >
-                                            <Users className="w-4 h-4 mr-2" />
-                                            Register as Patient
+                                            <Users className="w-4 h-4 shrink-0" />
+                                            <span className="text-sm font-medium">Register as Patient</span>
                                         </DropdownMenuItem>
                                         <DropdownMenuItem
                                             onClick={() => navigate('/nurse/register')}
-                                            className="cursor-pointer hover:bg-primary/10 hover:text-primary"
+                                            className="cursor-pointer rounded-lg px-3 py-2.5 hover:bg-purple-50 hover:text-purple-700 gap-2.5"
                                         >
-                                            <Stethoscope className="w-4 h-4 mr-2" />
-                                            Register as Nurse
+                                            <Stethoscope className="w-4 h-4 shrink-0" />
+                                            <span className="text-sm font-medium">Register as Nurse</span>
                                         </DropdownMenuItem>
                                     </DropdownMenuContent>
                                 </DropdownMenu>
@@ -166,19 +192,24 @@ const Navbar = () => {
                             <Button
                                 size="sm"
                                 onClick={() => navigate(getDashboardPath())}
-                                className="text-white font-bold flex items-center gap-1.5 transition-all duration-300 bg-purple-600 hover:bg-purple-700 border-none"
+                                className="gap-1.5 text-white font-semibold rounded-lg transition-all duration-300 border-none"
+                                style={{ background: 'linear-gradient(135deg, #9333ea 0%, #7c3aed 100%)', boxShadow: '0 2px 8px rgba(147, 51, 234, 0.3)' }}
                             >
                                 Go to Dashboard
-                                <ArrowRight className="w-4 h-4" />
+                                <ArrowRight className="w-3.5 h-3.5" />
                             </Button>
                         )}
                     </div>
 
                     {/* Mobile Menu Button */}
                     <button
-                        className={`md:hidden p-2 rounded-lg transition-colors ${showSolidNavbar ? 'text-gray-900 hover:bg-gray-100' : 'text-white hover:bg-white/10'
-                            }`}
+                        className={`md:hidden p-2 rounded-lg transition-colors ${
+                            showSolidNavbar
+                                ? 'text-gray-700 hover:bg-gray-100'
+                                : 'text-white hover:bg-white/10'
+                        }`}
                         onClick={() => setIsOpen(!isOpen)}
+                        aria-label="Toggle menu"
                     >
                         {isOpen
                             ? <X className="w-5 h-5" />
@@ -190,38 +221,44 @@ const Navbar = () => {
 
                 {/* Mobile Menu */}
                 {isOpen && (
-                    <div className="md:hidden py-4 border-t animate-in slide-in-from-top-2" style={{ borderColor: 'rgba(160,80,255,0.18)' }}>
-                        <div className="flex flex-col gap-1">
+                    <div
+                        className="md:hidden py-3 border-t animate-in slide-in-from-top-2"
+                        style={{
+                            borderColor: showSolidNavbar ? 'rgba(139, 92, 246, 0.12)' : 'rgba(255,255,255,0.12)',
+                            background: showSolidNavbar ? 'rgba(255,255,255,0.98)' : 'rgba(15, 10, 40, 0.92)',
+                        }}
+                    >
+                        <div className="flex flex-col gap-0.5 pb-2">
                             {navLinks.map((link) => (
                                 <Link
                                     key={link.name}
                                     to={link.path}
-                                    className={`px-3 py-2 text-sm font-medium rounded-lg transition-all ${isActive(link.path)
-                                        ? showSolidNavbar ? 'text-purple-700 font-semibold bg-purple-50' : 'text-white font-semibold bg-white/10'
-                                        : showSolidNavbar ? 'text-gray-600 hover:text-purple-700 hover:bg-purple-50' : 'text-white/70 hover:text-white hover:bg-white/10'
-                                        }`}
+                                    className={`px-3 py-2.5 text-sm font-medium rounded-lg transition-all ${
+                                        isActive(link.path)
+                                            ? showSolidNavbar
+                                                ? 'text-purple-700 bg-purple-50 font-semibold'
+                                                : 'text-white bg-white/10 font-semibold'
+                                            : showSolidNavbar
+                                                ? 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                                                : 'text-white/70 hover:text-white hover:bg-white/10'
+                                    }`}
                                     onClick={() => setIsOpen(false)}
                                 >
                                     {link.name}
                                 </Link>
                             ))}
 
-                            <div className="pt-3 mt-2 border-t" style={{ borderColor: 'rgba(160,80,255,0.18)' }}>
+                            <div className="pt-3 mt-1.5 border-t" style={{ borderColor: showSolidNavbar ? 'rgba(139,92,246,0.1)' : 'rgba(255,255,255,0.1)' }}>
                                 {!isLoggedIn ? (
                                     <>
-                                        <div className="px-2 mb-2">
-                                            <p className="text-xs font-semibold text-white/50 uppercase tracking-wider">
-                                                Login
-                                            </p>
-                                        </div>
+                                        <p className={`text-[10px] font-bold uppercase tracking-widest px-3 mb-2 ${showSolidNavbar ? 'text-gray-400' : 'text-white/40'}`}>
+                                            Login
+                                        </p>
                                         <Button
                                             variant="ghost"
                                             size="sm"
-                                            className="w-full justify-start gap-2 mb-1"
-                                            onClick={() => {
-                                                navigate('/customer/login')
-                                                setIsOpen(false)
-                                            }}
+                                            className={`w-full justify-start gap-2.5 mb-1 text-sm font-medium ${showSolidNavbar ? 'text-gray-700 hover:bg-gray-100' : 'text-white/80 hover:bg-white/10 hover:text-white'}`}
+                                            onClick={() => { navigate('/customer/login'); setIsOpen(false) }}
                                         >
                                             <Users className="w-4 h-4" />
                                             Login as Patient
@@ -229,11 +266,8 @@ const Navbar = () => {
                                         <Button
                                             variant="ghost"
                                             size="sm"
-                                            className="w-full justify-start gap-2 mb-1"
-                                            onClick={() => {
-                                                navigate('/nurse/login')
-                                                setIsOpen(false)
-                                            }}
+                                            className={`w-full justify-start gap-2.5 mb-1 text-sm font-medium ${showSolidNavbar ? 'text-gray-700 hover:bg-gray-100' : 'text-white/80 hover:bg-white/10 hover:text-white'}`}
+                                            onClick={() => { navigate('/nurse/login'); setIsOpen(false) }}
                                         >
                                             <Stethoscope className="w-4 h-4" />
                                             Login as Nurse
@@ -241,28 +275,21 @@ const Navbar = () => {
                                         <Button
                                             variant="ghost"
                                             size="sm"
-                                            className="w-full justify-start gap-2 mb-3"
-                                            onClick={() => {
-                                                navigate('/admin/login')
-                                                setIsOpen(false)
-                                            }}
+                                            className={`w-full justify-start gap-2.5 mb-3 text-sm font-medium ${showSolidNavbar ? 'text-gray-700 hover:bg-gray-100' : 'text-white/80 hover:bg-white/10 hover:text-white'}`}
+                                            onClick={() => { navigate('/admin/login'); setIsOpen(false) }}
                                         >
                                             <Shield className="w-4 h-4" />
                                             Admin Login
                                         </Button>
 
-                                        <div className="px-2 mb-2 mt-2">
-                                            <p className="text-xs font-semibold text-white/50 uppercase tracking-wider">
-                                                Register
-                                            </p>
-                                        </div>
+                                        <p className={`text-[10px] font-bold uppercase tracking-widest px-3 mb-2 ${showSolidNavbar ? 'text-gray-400' : 'text-white/40'}`}>
+                                            Register
+                                        </p>
                                         <Button
                                             size="sm"
-                                            className="w-full justify-start gap-2 mb-2 text-white font-semibold bg-purple-600 hover:bg-purple-700 border-none"
-                                            onClick={() => {
-                                                navigate('/customer/register')
-                                                setIsOpen(false)
-                                            }}
+                                            className="w-full justify-start gap-2.5 mb-1.5 text-white font-semibold border-none"
+                                            style={{ background: 'linear-gradient(135deg, #9333ea 0%, #7c3aed 100%)' }}
+                                            onClick={() => { navigate('/customer/register'); setIsOpen(false) }}
                                         >
                                             <Users className="w-4 h-4" />
                                             Register as Patient
@@ -270,11 +297,8 @@ const Navbar = () => {
                                         <Button
                                             variant="outline"
                                             size="sm"
-                                            className="w-full justify-start gap-2"
-                                            onClick={() => {
-                                                navigate('/nurse/register')
-                                                setIsOpen(false)
-                                            }}
+                                            className={`w-full justify-start gap-2.5 font-medium ${showSolidNavbar ? 'border-purple-200 text-purple-700 hover:bg-purple-50' : 'border-white/20 text-white hover:bg-white/10'}`}
+                                            onClick={() => { navigate('/nurse/register'); setIsOpen(false) }}
                                         >
                                             <Stethoscope className="w-4 h-4" />
                                             Register as Nurse
@@ -283,11 +307,9 @@ const Navbar = () => {
                                 ) : (
                                     <Button
                                         size="sm"
-                                        className="w-full text-white font-bold flex items-center justify-center gap-1.5 bg-purple-600 hover:bg-purple-700 border-none"
-                                        onClick={() => {
-                                            navigate(getDashboardPath())
-                                            setIsOpen(false)
-                                        }}
+                                        className="w-full gap-2 text-white font-semibold border-none"
+                                        style={{ background: 'linear-gradient(135deg, #9333ea 0%, #7c3aed 100%)' }}
+                                        onClick={() => { navigate(getDashboardPath()); setIsOpen(false) }}
                                     >
                                         Go to Dashboard
                                         <ArrowRight className="w-4 h-4" />
@@ -303,5 +325,3 @@ const Navbar = () => {
 }
 
 export default Navbar
-
-

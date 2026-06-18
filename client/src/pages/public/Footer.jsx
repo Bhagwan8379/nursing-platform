@@ -55,39 +55,50 @@ const Footer = () => {
     ]
 
     return (
-        <footer 
+        <footer
             ref={sectionRef}
-            className="relative bg-slate-950 text-white overflow-hidden border-t border-purple-900/20"
+            className="relative text-white overflow-hidden"
+            style={{ background: 'linear-gradient(180deg, #0a0518 0%, #07030f 100%)', borderTop: '1px solid rgba(139,92,246,0.12)' }}
         >
+            {/* Top decorative gradient line */}
+            <div
+                className="absolute top-0 left-0 right-0 h-px"
+                style={{ background: 'linear-gradient(90deg, transparent, rgba(147,51,234,0.5) 30%, rgba(192,132,252,0.4) 50%, rgba(147,51,234,0.5) 70%, transparent)' }}
+            />
 
-            <div 
-                className={`relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-10 transition-all duration-1000 ease-out transform ${
+            <div
+                className={`relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 lg:py-5 transition-all duration-1000 ease-out transform ${
                     isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
                 }`}
             >
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
 
                     {/* Brand Section */}
-                    <div className="lg:col-span-1 flex flex-col justify-start">
-                        <div className="flex items-center gap-2 mb-3.5 group">
-                            <div className="bg-purple-600 p-1.5 rounded-lg shadow-lg shadow-purple-950/40 transition-transform duration-300 group-hover:scale-105">
-                                <Heart className="w-4 h-4 text-white fill-white/10" />
+                    <div className="lg:col-span-1 flex flex-col justify-start gap-0">
+                        <div className="flex items-center gap-2.5 mb-2 group">
+                            <div
+                                className="p-1.5 rounded-lg transition-transform duration-300 group-hover:scale-105"
+                                style={{ background: 'linear-gradient(135deg, #9333ea 0%, #7c3aed 100%)', boxShadow: '0 2px 8px rgba(147,51,234,0.4)' }}
+                            >
+                                <Heart className="w-4 h-4 text-white fill-white/20" />
                             </div>
-                            <span className="font-bold text-xl text-purple-400 tracking-tight">
+                            <span className="font-bold text-lg text-white tracking-tight font-heading">
                                 CareNest
                             </span>
                         </div>
-                        
-                        <p className="text-gray-400 text-xs leading-relaxed mb-4">
+
+                        <p className="text-gray-400 text-xs leading-relaxed mb-3 max-w-[220px]">
                             Professional at-home nursing services. Connecting patients with verified, trusted nurses.
                         </p>
 
                         {/* Contact Info */}
-                        <div className="space-y-2">
+                        <div className="space-y-1.5">
                             {contact.map((item, idx) => (
-                                <div key={idx} className="flex items-center gap-2 text-gray-300 group cursor-default">
-                                    <item.icon className="w-3.5 h-3.5 text-purple-400 group-hover:text-purple-300 transition-colors shrink-0" />
-                                    <span className="text-xs text-gray-300 group-hover:text-white transition-colors">
+                                <div key={idx} className="flex items-center gap-2.5 group cursor-default">
+                                    <div className="w-6 h-6 rounded-md flex items-center justify-center shrink-0" style={{ background: 'rgba(147,51,234,0.15)' }}>
+                                        <item.icon className="w-3 h-3 text-purple-400" />
+                                    </div>
+                                    <span className="text-xs text-gray-400 group-hover:text-gray-200 transition-colors">
                                         {item.text}
                                     </span>
                                 </div>
@@ -97,19 +108,18 @@ const Footer = () => {
 
                     {/* Quick Links */}
                     <div>
-                        <h3 className="font-bold text-xs mb-4 uppercase tracking-wider text-white relative inline-block">
+                        <h3 className="font-bold text-xs mb-5 uppercase tracking-widest text-gray-200">
                             Quick Links
-                            <div className="absolute -bottom-1 left-0 w-6 h-0.5 bg-purple-600 rounded-full" />
                         </h3>
-                        <ul className="space-y-2">
+                        <ul className="space-y-1.5">
                             {quickLinks.map((link) => (
                                 <li key={link.name}>
                                     <Link
                                         to={link.path}
-                                        className="group flex items-center gap-1 text-gray-400 hover:text-purple-300 hover:translate-x-0.5 transition-all duration-300 text-xs"
+                                        className="group flex items-center gap-1.5 text-gray-400 hover:text-purple-300 transition-all duration-300 text-xs font-medium"
                                     >
-                                        <ChevronRight className="w-3 h-3 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all text-purple-400" />
-                                        <span className="font-medium">{link.name}</span>
+                                        <ChevronRight className="w-3 h-3 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-purple-400" />
+                                        <span>{link.name}</span>
                                     </Link>
                                 </li>
                             ))}
@@ -118,19 +128,18 @@ const Footer = () => {
 
                     {/* For Nurses */}
                     <div>
-                        <h3 className="font-bold text-xs mb-4 uppercase tracking-wider text-white relative inline-block">
+                        <h3 className="font-bold text-xs mb-3 uppercase tracking-widest text-gray-200">
                             For Nurses
-                            <div className="absolute -bottom-1 left-0 w-6 h-0.5 bg-purple-600 rounded-full" />
                         </h3>
-                        <ul className="space-y-2">
+                        <ul className="space-y-1.5">
                             {forNurse.map((link) => (
                                 <li key={link.name}>
                                     <Link
                                         to={link.path}
-                                        className="group flex items-center gap-1 text-gray-400 hover:text-purple-300 hover:translate-x-0.5 transition-all duration-300 text-xs"
+                                        className="group flex items-center gap-1.5 text-gray-400 hover:text-purple-300 transition-all duration-300 text-xs font-medium"
                                     >
-                                        <ChevronRight className="w-3 h-3 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all text-purple-400" />
-                                        <span className="font-medium">{link.name}</span>
+                                        <ChevronRight className="w-3 h-3 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-purple-400" />
+                                        <span>{link.name}</span>
                                     </Link>
                                 </li>
                             ))}
@@ -139,37 +148,36 @@ const Footer = () => {
 
                     {/* Why Choose Us trust items */}
                     <div>
-                        <h3 className="font-bold text-xs mb-4 uppercase tracking-wider text-white relative inline-block">
+                        <h3 className="font-bold text-xs mb-5 uppercase tracking-widest text-gray-200">
                             Why Choose Us
-                            <div className="absolute -bottom-1 left-0 w-6 h-0.5 bg-purple-600 rounded-full" />
                         </h3>
-                        <div className="space-y-2">
+                        <div className="space-y-1.5">
                             {whychoose.map((item, idx) => (
-                                <div key={idx} className="flex items-center gap-2 text-gray-300">
+                                <div key={idx} className="flex items-center gap-2.5">
                                     <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                                    <span className="text-xs font-medium text-gray-300">{item.text}</span>
+                                    <span className="text-xs font-medium text-gray-400">{item.text}</span>
                                 </div>
                             ))}
                         </div>
                     </div>
                 </div>
 
-                <Separator className="my-5 bg-white/10" />
+                <div className="my-3 h-px" style={{ background: 'rgba(255,255,255,0.06)' }} />
 
                 {/* Bottom Bar */}
                 <div className="flex flex-col md:flex-row items-center justify-between gap-3">
-                    <p className="text-[11px] text-gray-500 font-medium">
+                    <p className="text-[11px] text-gray-600 font-medium">
                         © {currentYear} CareNest. All rights reserved.
                     </p>
 
-                    <div className="flex items-center gap-4">
-                        <Link to="/privacy" className="text-[11px] text-gray-500 hover:text-purple-400 transition-colors font-medium">
+                    <div className="flex items-center gap-5">
+                        <Link to="/privacy" className="text-[11px] text-gray-600 hover:text-purple-400 transition-colors font-medium">
                             Privacy Policy
                         </Link>
-                        <Link to="/terms" className="text-[11px] text-gray-500 hover:text-purple-400 transition-colors font-medium">
+                        <Link to="/terms" className="text-[11px] text-gray-600 hover:text-purple-400 transition-colors font-medium">
                             Terms of Service
                         </Link>
-                        <Link to="/cookies" className="text-[11px] text-gray-500 hover:text-purple-400 transition-colors font-medium">
+                        <Link to="/cookies" className="text-[11px] text-gray-600 hover:text-purple-400 transition-colors font-medium">
                             Cookie Settings
                         </Link>
                     </div>

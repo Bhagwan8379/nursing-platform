@@ -20,7 +20,8 @@ import {
     useVerifyPaymentMutation,
     useGetCustomerInfoQuery,
     useUpdateCustomerInfoMutation,
-    useUpdateCustomerPasswordMutation
+    useUpdateCustomerPasswordMutation,
+    useSubmitFeedbackMutation
 } from '@/redux/apis/bookingApi'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -39,7 +40,10 @@ const PatientDashboard = () => {
     // Queries & Mutations
     const { data: servicesData, isLoading: servicesLoading } = useGetAllServicesQuery()
     const { data: bookingsData, isLoading: bookingsLoading, refetch: refetchBookings } = useGetMyBookingsQuery()
-    const { data: profileData, isLoading: profileLoading, refetch: refetchProfile } = useGetCustomerInfoQuery(undefined, { skip: !patient })
+    const { data: profileData, isLoading: profileLoading, refetch: refetchProfile } = useGetCustomerInfoQuery(undefined, { 
+        skip: !patient,
+        pollingInterval: 15000
+    })
     
     const [createBooking, { isLoading: bookingCreating }] = useCreateBookingMutation()
     const [cancelBooking] = useCancelBookingMutation()
@@ -47,6 +51,7 @@ const PatientDashboard = () => {
     const [verifyPayment] = useVerifyPaymentMutation()
     const [updateCustomerInfo, { isLoading: profileUpdating }] = useUpdateCustomerInfoMutation()
     const [updateCustomerPassword, { isLoading: passwordUpdating }] = useUpdateCustomerPasswordMutation()
+    const [submitFeedback, { isLoading: feedbackSubmitting }] = useSubmitFeedbackMutation()
 
     // Dashboard State
     const [activeTab, setActiveTab] = useState('dashboard') // dashboard, bookings, profile
@@ -96,6 +101,30 @@ const PatientDashboard = () => {
     const [showCurrentPass, setShowCurrentPass] = useState(false)
     const [showNewPass, setShowNewPass] = useState(false)
     const [showConfirmPass, setShowConfirmPass] = useState(false)
+
+    // Platform Feedback Form State
+    const [feedbackForm, setFeedbackForm] = useState({
+        rating: 5,
+        comment: ''
+    })
+
+    const handleFeedbackSubmit = async (e) => {
+        e.preventDefault()
+        if (!feedbackForm.comment.trim()) {
+            toast.error('Please write a comment first')
+            return
+        }
+        try {
+            await submitFeedback({
+                rating: feedbackForm.rating,
+                comment: feedbackForm.comment.trim()
+            }).unwrap()
+            toast.success('Thank you for your feedback! The platform managers will review it.')
+            setFeedbackForm({ rating: 5, comment: '' })
+        } catch (error) {
+            toast.error(error?.data?.message || 'Failed to submit feedback')
+        }
+    }
 
     // Synchronize current profile form inputs
     const liveProfile = profileData?.result || patient
@@ -447,6 +476,17 @@ const PatientDashboard = () => {
                     >
                         <User className="w-4 h-4 shrink-0" />
                         My Profile
+                    </button>
+                    <button
+                        onClick={() => setActiveTab('feedback')}
+                        className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-300 ${
+                            activeTab === 'feedback'
+                                ? 'bg-primary text-white shadow-lg shadow-primary/10'
+                                : 'text-slate-600 hover:bg-slate-50'
+                        }`}
+                    >
+                        <Star className="w-4 h-4 shrink-0" />
+                        Feedback & Reviews
                     </button>
                 </nav>
 
@@ -1206,6 +1246,98 @@ const PatientDashboard = () => {
                                     </div>
                                 </div>
                             )}
+                        </motion.div>
+                    )}
+
+                    {/* 4. Platform Feedback Tab Content */}
+                    {activeTab === 'feedback' && (
+                        <motion.div
+                            key="feedback"
+                            initial={{ opacity: 0, y: 15 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -15 }}
+                            transition={{ duration: 0.25 }}
+                            className="space-y-8"
+                        >
+                            {/* Page Header */}
+                            <div>
+                                <h1 className="text-2xl md:text-3xl font-extrabold text-slate-800 tracking-tight">Platform Feedback & Reviews</h1>
+                                <p className="text-sm text-slate-500 mt-1">We value your opinion! Share your experience with CareNest to help us improve doorstep care.</p>
+                            </div>
+
+                            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                                {/* Form Column */}
+                                <div className="lg:col-span-2 bg-white border border-slate-100 p-6 md:p-8 rounded-3xl shadow-xs">
+                                    <form onSubmit={handleFeedbackSubmit} className="space-y-6">
+                                        <div className="space-y-2">
+                                            <Label className="text-sm font-bold text-slate-700">How would you rate your experience?</Label>
+                                            <div className="flex gap-2">
+                                                {[1, 2, 3, 4, 5].map((starValue) => {
+                                                    const isFilled = starValue <= feedbackForm.rating
+                                                    return (
+                                                        <button
+                                                            key={starValue}
+                                                            type="button"
+                                                            onClick={() => setFeedbackForm({ ...feedbackForm, rating: starValue })}
+                                                            className="transition-transform duration-200 hover:scale-110 focus:outline-hidden"
+                                                        >
+                                                            <Star
+                                                                className={`w-8 h-8 ${
+                                                                    isFilled 
+                                                                        ? 'fill-amber-400 text-amber-400' 
+                                                                        : 'fill-slate-100 text-slate-300'
+                                                                }`}
+                                                            />
+                                                        </button>
+                                                    )
+                                                })}
+                                            </div>
+                                            <p className="text-xs text-slate-400 font-medium">Click on a star to set your rating.</p>
+                                        </div>
+
+                                        <div className="space-y-2">
+                                            <Label className="text-sm font-bold text-slate-700">Your Review / Comments</Label>
+                                            <textarea
+                                                required
+                                                rows="5"
+                                                value={feedbackForm.comment}
+                                                onChange={(e) => setFeedbackForm({ ...feedbackForm, comment: e.target.value })}
+                                                placeholder="Write your detailed experience here. Your feedback will help patients and the platform improve..."
+                                                className="w-full rounded-xl border border-slate-200 bg-transparent px-3.5 py-3 text-sm outline-none transition-all placeholder:text-slate-400 focus:border-primary focus:ring-2 focus:ring-primary/10 resize-none"
+                                            />
+                                        </div>
+
+                                        <div className="flex justify-end pt-4 border-t border-slate-50">
+                                            <Button
+                                                type="submit"
+                                                disabled={feedbackSubmitting}
+                                                className="bg-primary hover:bg-primary/95 text-white font-bold h-11 px-8 rounded-xl transition-all shadow-md shadow-primary/15"
+                                            >
+                                                {feedbackSubmitting ? 'Submitting your review...' : 'Submit Platform Review'}
+                                            </Button>
+                                        </div>
+                                    </form>
+                                </div>
+
+                                {/* Guidelines Column */}
+                                <div className="space-y-6">
+                                    <h3 className="text-lg font-bold text-slate-800">Feedback Guidelines</h3>
+                                    <div className="bg-purple-50/50 border border-purple-100 rounded-2xl p-6 space-y-4">
+                                        <div className="space-y-1">
+                                            <h5 className="font-bold text-sm text-purple-950">Vetted Platform Reviews</h5>
+                                            <p className="text-xs text-purple-900 leading-normal">
+                                                All patient feedbacks are reviewed by the administration. Approved testimonials will appear directly on our public homepage marquee carousel.
+                                            </p>
+                                        </div>
+                                        <div className="space-y-1">
+                                            <h5 className="font-bold text-sm text-purple-950">Helpful Details</h5>
+                                            <p className="text-xs text-purple-900 leading-normal">
+                                                Please describe the behavior, responsiveness, and clinical capability of the caregivers or the seamlessness of the booking portal.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </motion.div>
                     )}
                 </AnimatePresence>

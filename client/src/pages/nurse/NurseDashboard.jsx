@@ -43,7 +43,9 @@ const NurseDashboard = () => {
     const [logoutNurseMutation] = useLogoutNurseMutation()
 
     // RTK Queries & Mutations
-    const { data: profileData, isLoading: profileLoading, refetch: refetchProfile } = useGetNurseInfoQuery()
+    const { data: profileData, isLoading: profileLoading, refetch: refetchProfile } = useGetNurseInfoQuery(undefined, {
+        pollingInterval: 15000
+    })
     const { data: bookingsData, isLoading: bookingsLoading, refetch: refetchBookings } = useGetNurseBookingsQuery()
     const { data: reviewsData, isLoading: reviewsLoading, refetch: refetchReviews } = useGetNurseReviewsQuery(nurse?._id, { skip: !nurse?._id })
 

@@ -12,6 +12,9 @@ const Service = lazy(() => import('./pages/public/Service'))
 const AllServices = lazy(() => import('./pages/public/AllServices'))
 const About = lazy(() => import('./pages/public/About'))
 const Contact = lazy(() => import('./pages/public/Contact'))
+const Privacy = lazy(() => import('./pages/public/Privacy'))
+const Terms = lazy(() => import('./pages/public/Terms'))
+const Cookies = lazy(() => import('./pages/public/Cookies'))
 
 // Auth portals
 const PatientLogin = lazy(() => import('./pages/auth/PatientLogin'))
@@ -55,6 +58,27 @@ function App() {
           <Suspense fallback={<PremiumLoader />}>
             <ErrorBoundary FallbackComponent={FallBackError}>
               <Contact />
+            </ErrorBoundary>
+          </Suspense>
+        } />
+        <Route path="/privacy" element={
+          <Suspense fallback={<PremiumLoader />}>
+            <ErrorBoundary FallbackComponent={FallBackError}>
+              <Privacy />
+            </ErrorBoundary>
+          </Suspense>
+        } />
+        <Route path="/terms" element={
+          <Suspense fallback={<PremiumLoader />}>
+            <ErrorBoundary FallbackComponent={FallBackError}>
+              <Terms />
+            </ErrorBoundary>
+          </Suspense>
+        } />
+        <Route path="/cookies" element={
+          <Suspense fallback={<PremiumLoader />}>
+            <ErrorBoundary FallbackComponent={FallBackError}>
+              <Cookies />
             </ErrorBoundary>
           </Suspense>
         } />
