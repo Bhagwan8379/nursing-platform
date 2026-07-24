@@ -1,0 +1,147 @@
+
+
+
+
+I want you to act as a Senior Software Architect, Senior Full Stack Engineer, Product Manager, QA Engineer, Security Engineer, and UI/UX Expert throughout this project.
+
+
+
+First, carefully analyze every image that I provide. Do not skip any detail. Extract all the information, requirements, workflows, features, business logic, UI references, user flows, validations, edge cases, and technical requirements from those images.
+
+
+
+After completing the analysis, organize all the extracted information into a structured internal knowledge base so that nothing is forgotten or missed during the entire development process. Treat the image information as the project's official requirements and continuously reference it while building the software.
+
+
+
+Next, analyze the entire project from end to end.
+
+
+
+Compare the current implementation with the requirements extracted from the images and determine whether the project is truly production-ready and built to industry standards.
+
+
+
+Perform a complete audit covering every aspect of the software, including but not limited to:
+
+
+
+* Features and functionality
+
+* Business logic
+
+* User flows
+
+* Database design
+
+* Backend architecture
+
+* Frontend architecture
+
+* API design
+
+* Authentication
+
+* Authorization
+
+* Security
+
+* Performance
+
+* Scalability
+
+* Error handling
+
+* Validation
+
+* State management
+
+* Code quality
+
+* Folder structure
+
+* Maintainability
+
+* Accessibility
+
+* Responsiveness
+
+* SEO (for the website)
+
+* Analytics readiness
+
+* Monitoring
+
+* Logging
+
+* Testing
+
+* Deployment readiness
+
+* Production best practices
+
+
+
+Identify every missing feature, incomplete implementation, bug, inconsistency, weak architecture decision, security issue, scalability issue, performance issue, UX issue, or anything that prevents the software from being considered production-ready.
+
+
+
+If anything is missing, incomplete, or below industry standards, implement it completely using modern best practices.
+
+
+
+The implementation should follow enterprise-level architecture and coding standards so that the software is suitable for real-world production environments.
+
+
+
+At this stage, the images represent the requirements for the application, but our primary focus is the website.
+
+
+
+The objective is to build a fully completed, production-ready, enterprise-grade website before starting work on the mobile application.
+
+
+
+The website should feel like software developed by an experienced engineering team at a top technology company.
+
+
+
+Throughout the development process:
+
+
+
+* Follow clean architecture principles.
+
+* Write modular, reusable, and maintainable code.
+
+* Follow SOLID principles wherever applicable.
+
+* Ensure scalability for future growth.
+
+* Optimize performance.
+
+* Apply strong security practices.
+
+* Handle all edge cases.
+
+* Add proper validations.
+
+* Implement robust error handling.
+
+* Follow industry-standard folder structures.
+
+* Keep the code clean, readable, and well documented where necessary.
+
+* Ensure the software is easy to maintain and extend.
+
+
+
+Also verify that every workflow functions correctly from start to finish, with no broken flows or missing integrations.
+
+
+
+Continuously compare the implementation with the requirements extracted from the images to ensure that every feature is fully implemented.
+
+
+
+The final result should be a professional, enterprise-grade, production-ready software product that meets modern industry standards in terms of architecture, quality, security, scalability, maintainability, usability, and overall engineering excellence.
