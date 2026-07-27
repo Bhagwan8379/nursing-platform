@@ -328,15 +328,7 @@ const Hero = () => {
                 </div>
             )}
 
-            {/* Scroll Indicator (Only visible near top) */}
-            <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-1.5 opacity-60 hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-                <span className="text-[10px] text-white/50 uppercase tracking-widest font-semibold">
-                    Scroll to Explore
-                </span>
-                <div className="w-5 h-9 rounded-full border-2 border-white/20 flex items-start justify-center p-1">
-                    <div className="w-1 h-2 bg-purple-400 rounded-full animate-bounce mt-0.5" />
-                </div>
-            </div>
+
         </div>
     )
 }
