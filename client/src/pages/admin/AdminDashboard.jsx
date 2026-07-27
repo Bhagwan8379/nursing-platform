@@ -184,7 +184,7 @@ const AdminDashboard = () => {
         const name = nurse.nurseId?.name || ''
         const email = nurse.nurseId?.email || ''
         const mobile = nurse.nurseId?.mobile || ''
-        
+
         const matchesSearch = name.toLowerCase().includes(nurseSearch.toLowerCase()) ||
             email.toLowerCase().includes(nurseSearch.toLowerCase()) ||
             mobile.includes(nurseSearch)
@@ -228,7 +228,7 @@ const AdminDashboard = () => {
             email.toLowerCase().includes(custSearch.toLowerCase()) ||
             mobile.includes(custSearch)
 
-        const matchesStatus = custStatusFilter === 'All' || 
+        const matchesStatus = custStatusFilter === 'All' ||
             (custStatusFilter === 'Active' && cust.isActive) ||
             (custStatusFilter === 'Blocked' && !cust.isActive)
 
@@ -605,7 +605,7 @@ const AdminDashboard = () => {
                                         <line x1="0" y1="80" x2="500" y2="80" stroke="#e2e8f0" strokeWidth="1" strokeDasharray="3" />
                                         <line x1="0" y1="120" x2="500" y2="120" stroke="#e2e8f0" strokeWidth="1" strokeDasharray="3" />
                                         <line x1="0" y1="160" x2="500" y2="160" stroke="#e2e8f0" strokeWidth="1" strokeDasharray="3" />
-                                        
+
                                         <path
                                             d="M 0 160 Q 80 120 160 140 T 320 80 T 420 60 L 500 160 L 0 160 Z"
                                             fill="url(#chartGradient)"
@@ -621,7 +621,7 @@ const AdminDashboard = () => {
                                         <circle cx="320" cy="80" r="5" fill="#ffffff" stroke="oklch(0.491 0.27 292.581)" strokeWidth="2.5" />
                                         <circle cx="420" cy="60" r="5" fill="#ffffff" stroke="#2dd4bf" strokeWidth="2.5" />
                                     </svg>
-                                    
+
                                     <div className="flex justify-between text-[10px] font-bold text-slate-500 uppercase px-2">
                                         <span>Mon</span>
                                         <span>Tue</span>
@@ -632,7 +632,7 @@ const AdminDashboard = () => {
                                         <span>Sun (Today)</span>
                                     </div>
                                 </div>
-                                
+
                                 <div className="flex items-center gap-6 mt-4 text-xs font-semibold justify-center text-slate-600">
                                     <span className="flex items-center gap-2">
                                         <span className="w-3 h-3 rounded-full bg-primary block"></span>
@@ -689,9 +689,8 @@ const AdminDashboard = () => {
                                                         </td>
                                                         <td className="p-4 font-bold text-slate-900">₹{b.totalAmount}</td>
                                                         <td className="p-4">
-                                                            <span className={`text-[10px] font-extrabold px-2 py-0.5 rounded-sm border ${
-                                                                b.paymentStatus === 'paid' ? 'bg-green-50 text-green-700 border-green-200' : 'bg-amber-50 text-amber-700 border-amber-200'
-                                                            }`}>
+                                                            <span className={`text-[10px] font-extrabold px-2 py-0.5 rounded-sm border ${b.paymentStatus === 'paid' ? 'bg-green-50 text-green-700 border-green-200' : 'bg-amber-50 text-amber-700 border-amber-200'
+                                                                }`}>
                                                                 {(b.paymentStatus || 'pending').toUpperCase()}
                                                             </span>
                                                         </td>
@@ -939,9 +938,8 @@ const AdminDashboard = () => {
                                                                 </span>
                                                             </td>
                                                             <td className="p-4">
-                                                                <span className={`text-[10px] font-extrabold px-2 py-0.5 rounded-sm border ${
-                                                                    service.isActive ? 'bg-green-50 text-green-700 border-green-200' : 'bg-slate-50 text-slate-500 border-slate-200'
-                                                                }`}>
+                                                                <span className={`text-[10px] font-extrabold px-2 py-0.5 rounded-sm border ${service.isActive ? 'bg-green-50 text-green-700 border-green-200' : 'bg-slate-50 text-slate-500 border-slate-200'
+                                                                    }`}>
                                                                     {service.isActive ? 'ACTIVE' : 'DEACTIVE'}
                                                                 </span>
                                                             </td>
@@ -1064,11 +1062,10 @@ const AdminDashboard = () => {
                                                                 <span className={`text-[10px] font-extrabold px-2 py-0.5 rounded-sm border block w-fit ${getStatusColor(booking.status)}`}>
                                                                     {(booking.status || 'pending').toUpperCase()}
                                                                 </span>
-                                                                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-sm border block w-fit ${
-                                                                    booking.paymentStatus === 'paid' ? 'bg-green-50 text-green-700 border-green-200' :
-                                                                    booking.paymentStatus === 'refunded' ? 'bg-rose-50 text-rose-700 border-rose-200' :
-                                                                    'bg-slate-50 text-slate-500 border-slate-200'
-                                                                }`}>
+                                                                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-sm border block w-fit ${booking.paymentStatus === 'paid' ? 'bg-green-50 text-green-700 border-green-200' :
+                                                                        booking.paymentStatus === 'refunded' ? 'bg-rose-50 text-rose-700 border-rose-200' :
+                                                                            'bg-slate-50 text-slate-500 border-slate-200'
+                                                                    }`}>
                                                                     PAY: {(booking.paymentStatus || 'pending').toUpperCase()} ({(booking.paymentMode || 'online').toUpperCase()})
                                                                 </span>
                                                             </div>
@@ -1275,20 +1272,18 @@ const AdminDashboard = () => {
                                                         <td className="p-4 font-mono text-xs">{nurse.nursingCouncilRegNo}</td>
                                                         <td className="p-4 font-semibold text-slate-700">{nurse.experienceYear} Years</td>
                                                         <td className="p-4">
-                                                            <span className={`text-[10px] font-bold px-2 py-0.5 rounded-sm border ${
-                                                                nurse.availabilityStatus === 'available' ? 'bg-green-50 text-green-700 border-green-200' :
-                                                                nurse.availabilityStatus === 'busy' ? 'bg-amber-50 text-amber-700 border-amber-200' :
-                                                                'bg-slate-50 text-slate-500 border-slate-200'
-                                                            }`}>
+                                                            <span className={`text-[10px] font-bold px-2 py-0.5 rounded-sm border ${nurse.availabilityStatus === 'available' ? 'bg-green-50 text-green-700 border-green-200' :
+                                                                    nurse.availabilityStatus === 'busy' ? 'bg-amber-50 text-amber-700 border-amber-200' :
+                                                                        'bg-slate-50 text-slate-500 border-slate-200'
+                                                                }`}>
                                                                 {(nurse.availabilityStatus || 'off_duty').toUpperCase()}
                                                             </span>
                                                         </td>
                                                         <td className="p-4">
-                                                            <span className={`text-[10px] font-extrabold px-2 py-0.5 rounded-sm border ${
-                                                                nurse.verificationStatus === 'approved' ? 'bg-green-50 text-green-700 border-green-200' :
-                                                                nurse.verificationStatus === 'pending' ? 'bg-amber-50 text-amber-700 border-amber-200' :
-                                                                'bg-red-50 text-red-700 border-red-200'
-                                                            }`}>
+                                                            <span className={`text-[10px] font-extrabold px-2 py-0.5 rounded-sm border ${nurse.verificationStatus === 'approved' ? 'bg-green-50 text-green-700 border-green-200' :
+                                                                    nurse.verificationStatus === 'pending' ? 'bg-amber-50 text-amber-700 border-amber-200' :
+                                                                        'bg-red-50 text-red-700 border-red-200'
+                                                                }`}>
                                                                 {(nurse.verificationStatus || 'pending').toUpperCase()}
                                                             </span>
                                                         </td>
@@ -1330,7 +1325,7 @@ const AdminDashboard = () => {
                                     </div>
                                 )}
                             </CardContent>
-                            
+
                             {/* Pagination Controls */}
                             {totalNursePages > 1 && (
                                 <CardFooter className="bg-slate-50 border-t border-slate-100 flex items-center justify-between p-4">
@@ -1478,9 +1473,8 @@ const AdminDashboard = () => {
                                                             })}
                                                         </td>
                                                         <td className="p-4">
-                                                            <span className={`text-[10px] font-extrabold px-2 py-0.5 rounded-sm border ${
-                                                                cust.isActive ? 'bg-green-50 text-green-700 border-green-200' : 'bg-red-50 text-red-700 border-red-200'
-                                                            }`}>
+                                                            <span className={`text-[10px] font-extrabold px-2 py-0.5 rounded-sm border ${cust.isActive ? 'bg-green-50 text-green-700 border-green-200' : 'bg-red-50 text-red-700 border-red-200'
+                                                                }`}>
                                                                 {cust.isActive ? 'ACTIVE' : 'BLOCKED'}
                                                             </span>
                                                         </td>
@@ -1704,11 +1698,10 @@ const AdminDashboard = () => {
                                                                 {[1, 2, 3, 4, 5].map((starVal) => (
                                                                     <Star
                                                                         key={starVal}
-                                                                        className={`w-4 h-4 ${
-                                                                            starVal <= feedback.rating
+                                                                        className={`w-4 h-4 ${starVal <= feedback.rating
                                                                                 ? 'fill-amber-400 text-amber-400'
                                                                                 : 'fill-slate-100 text-slate-200'
-                                                                        }`}
+                                                                            }`}
                                                                     />
                                                                 ))}
                                                             </div>
@@ -1724,11 +1717,10 @@ const AdminDashboard = () => {
                                                             })}
                                                         </td>
                                                         <td className="p-4">
-                                                            <span className={`text-[10px] font-extrabold px-2.5 py-1 rounded-full border tracking-wide uppercase ${
-                                                                feedback.showInTestimonials
+                                                            <span className={`text-[10px] font-extrabold px-2.5 py-1 rounded-full border tracking-wide uppercase ${feedback.showInTestimonials
                                                                     ? 'bg-green-50 text-green-700 border-green-200'
                                                                     : 'bg-slate-50 text-slate-500 border-slate-200'
-                                                            }`}>
+                                                                }`}>
                                                                 {feedback.showInTestimonials ? 'Visible (Approved)' : 'Hidden'}
                                                             </span>
                                                         </td>
@@ -1738,11 +1730,10 @@ const AdminDashboard = () => {
                                                                     size="sm"
                                                                     variant="outline"
                                                                     onClick={() => handleFeedbackToggleShow(feedback._id)}
-                                                                    className={`text-xs font-semibold flex items-center gap-1 ${
-                                                                        feedback.showInTestimonials
+                                                                    className={`text-xs font-semibold flex items-center gap-1 ${feedback.showInTestimonials
                                                                             ? 'border-slate-200 text-slate-600 hover:bg-slate-50'
                                                                             : 'border-primary/20 text-primary hover:bg-purple-50/50'
-                                                                    }`}
+                                                                        }`}
                                                                 >
                                                                     {feedback.showInTestimonials ? (
                                                                         <>
