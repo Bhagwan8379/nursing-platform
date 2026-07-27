@@ -5,9 +5,9 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { 
-    ArrowRight, 
-    Heart, 
+import {
+    ArrowRight,
+    Heart,
     Sparkles
 } from 'lucide-react'
 import PremiumLoader from '@/components/PremiumLoader'
@@ -34,13 +34,13 @@ const Hero = () => {
     // Progressive image preloader
     useEffect(() => {
         let active = true
-        
+
         // Initialize HTMLImageElement objects
         const images = []
         for (let i = 0; i < totalFrames; i++) {
             const img = new Image()
             const frameNum = String(i + 1).padStart(3, '0')
-            img.src = `/hero-frames/ezgif-frame-${frameNum}.png`
+            img.src = `/hero-frames/ezgif-frame-${frameNum}.webp`
             images.push(img)
         }
         imagesRef.current = images
@@ -228,8 +228,8 @@ const Hero = () => {
     return (
         <div ref={heroContainerRef} className="relative w-full h-screen bg-slate-950 overflow-hidden">
             {/* Hardware-Accelerated Canvas Background */}
-            <canvas 
-                ref={canvasRef} 
+            <canvas
+                ref={canvasRef}
                 className="absolute inset-0 w-full h-full block object-cover transition-opacity duration-700"
                 style={{ opacity: firstFrameLoaded ? 1 : 0 }}
             />
@@ -238,42 +238,42 @@ const Hero = () => {
             {!firstFrameLoaded && <PremiumLoader />}
 
             {/* Vignette Overlay (Slightly dark on left for text readability, fully clear on center/right to show frames beautifully) */}
-            <div 
+            <div
                 className="absolute inset-0 bg-gradient-to-r from-slate-950/70 via-slate-950/20 to-transparent z-10 pointer-events-none"
             />
             {/* Reduced top and bottom shadows */}
-            <div 
+            <div
                 className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-slate-950/45 to-transparent z-10 pointer-events-none"
             />
-            <div 
+            <div
                 className="absolute bottom-0 left-0 right-0 h-28 bg-gradient-to-t from-slate-950/45 to-transparent z-10 pointer-events-none"
             />
 
             {/* ──────────────────────────────────────────────────────────────────────── */}
             {/* CONTENT OVERLAYS                                                         */}
             {/* ──────────────────────────────────────────────────────────────────────── */}
-            
+
             {/* Section 1: Intro Section (Only Section 1 is kept) */}
-            <div 
+            <div
                 ref={section1Ref}
                 className="absolute inset-0 flex flex-col justify-center px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto z-25 w-full animate-fade-in"
             >
                 <div className="max-w-xl text-left">
-                    <Badge 
-                        variant="secondary" 
+                    <Badge
+                        variant="secondary"
                         className="mb-5 px-3 py-1 bg-purple-500/10 border-purple-500/30 text-purple-300 font-medium text-xs rounded-full gap-1.5 flex items-center w-fit shadow-inner"
                     >
                         <Sparkles className="w-3.5 h-3.5 text-purple-400" />
                         Trusted Home Nursing Platform
                     </Badge>
-                    
+
                     <h1 className="text-4xl sm:text-5xl font-extrabold font-heading text-white leading-tight mb-5 tracking-tight">
                         Professional Care{' '}
                         <span className="block mt-1 bg-gradient-to-r from-purple-400 via-purple-300 to-indigo-400 bg-clip-text text-transparent">
                             At Your Home
                         </span>
                     </h1>
-                    
+
                     <p className="text-white/80 text-sm sm:text-base mb-8 leading-relaxed font-sans max-w-md">
                         Connect with verified, registered nurses for clinical care at your doorstep. We bring elite hospital-grade healthcare directly to you.
                     </p>
@@ -288,7 +288,7 @@ const Hero = () => {
                             Book a Nurse
                             <ArrowRight className="w-4 h-4 ml-2" />
                         </Button>
-                        
+
                         <Button
                             size="lg"
                             variant="outline"
